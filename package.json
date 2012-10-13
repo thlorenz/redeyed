@@ -1,0 +1,27 @@
+{
+  "name": "redeyed",
+  "version": "0.0.0",
+  "description": "Takes a JavaScript abstract syntax tree, along with a config and returns the original code with words wrapped as configured.",
+  "author": "Thorsten Lorenz <thlorenz@gmx.de> (thlorenz.com)",
+  "main": "redeyed.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thlorenz/redeyed.git"
+  },
+  "keywords": [
+    "ast",
+    "syntax",
+    "tree",
+    "source",
+    "wrap",
+    "metadata"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "acorn": "0.0.1",
+    "tap": "~0.3.1"
+  }
+}
