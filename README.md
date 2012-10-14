@@ -1,4 +1,4 @@
-# redeyed
+# redeyed [![Build Status](https://secure.travis-ci.org/thlorenz/redeyed.png)](http://travis-ci.org/thlorenz/redeyed)
 
 *Add color to your syntax tree!*
 
