@@ -7,8 +7,8 @@ module.exports = {
     // {Array} expressions contain children to be followed when walking the tree
   , expressions: {
         ThisExpression: 'this'
-      , BinaryExpression: [ 'left', 'operator', 'right' ]
-      , AssignmentExpression: [ 'left', 'operator', 'right' ]
+//      , BinaryExpression: [ 'left', 'operator', 'right' ]
+//      , AssignmentExpression: [ 'left', 'operator', 'right' ]
     }
   , values: [
       'Literal'
