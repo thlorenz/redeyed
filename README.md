@@ -6,6 +6,15 @@
 
 [Red Eyed Tree Frog](http://allaboutfrogs.org/info/species/redeye.html) (*Agalychnis callidryas*)
 
+## Status
+
+Nothing useful here yet, so proceed as follows:
+
+```javascript
+if (youLikeTheIdea) star(); // this will encourage me to focus more effort on this project
+moveOn();
+```
+
 ## What?
 
 Takes a JavaScript abstract syntax tree, along with a config and returns the original code with words wrapped as configured.
