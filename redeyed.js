@@ -45,30 +45,34 @@ function redeyed (ast, opts) {
 
   (function walk (node, parent) {
     var tokenval
-      , child;
+      , child
+      , nowalk = [ 'type', 'start', 'end' ];
+
+    if (isString(node)) {
+     // console.log('string');
+      return addText(node, parent);
+    }
+
+    tokenval = node.type && expressions[node.type];
+    if (tokenval) {
+      return addText(tokenval, node);
+    }
 
     if (Array.isArray(node)) {
+      console.log('array -> walking it');
       return node.forEach(function (n) {
         walk(n, node);
       });
     }
 
-    if (!node.type) return;
+    //console.log('%s: %j', typeof node, node);
 
-    //console.log('%s: %j', node.type, node);
-
-    // Statments
-    tokenval = statements[node.type];
-    if (tokenval) {
-      return walk(node[tokenval], node);
-    } 
-
-    // Expressions
-    tokenval = expressions[node.type];
-    if (tokenval) {
-      child = node[tokenval];
-      return isString(tokenval) ? addText(tokenval, node) : walk(child, node);    
-    }
+    Object.keys(node).forEach(function (key) {
+      if (nowalk.indexOf(key) < 0) {
+      //  console.log('walking', key);
+        walk(node[key], node);
+      }
+    });
 
   })(ast, undefined);
   return acc.join('');
@@ -81,7 +85,7 @@ if (module.parent) return;
 var acorn = require('acorn').parse;
 
 function roundTripped (code) {
-  var ast = acorn(code, { linePositions: false });
+  var ast = acorn(code, { linePositions: true });
   return redeyed(ast);
 }
 
