@@ -26,18 +26,20 @@ function redeyed (ast, opts) {
       , padcolsLen
       , padded = value;
 
-    //console.log('start: %d, prevEnd: %d, padlen: %d', node.start, prevEnd, padlen);
+    // console.log('start: %d, prevEnd: %d, padlen: %d', node.start, prevEnd, padlen);
     padlinesLen = node.start.line - prevline;
+
     if (padlinesLen) {
       padded = padded + padlines.slice(-padlinesLen);
       padcolsLen = node.start.column;
     } else {
-      padcolsLen = node.start.column - prevcol
+      padcolsLen = node.start.column - prevcol;
     } 
 
     prevcol = node.end.column;
 
     padded = padcolsLen ? padspaces.slice(-padcolsLen) + padded : padded;
+
     return acc.push(padded);
   }
 
