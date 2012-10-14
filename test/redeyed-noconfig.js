@@ -21,6 +21,7 @@ function roundTripped (code) {
 , '1 + 2'
 , '  1 + 2'
 , '  1  +  2'
+, '1 * 2  + 3'
 ]
 //.slice(-1)
 .forEach(function (code) {

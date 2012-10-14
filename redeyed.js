@@ -55,7 +55,7 @@ function redeyed (ast, opts) {
     , prevline = 1
     , prevcol = 0;
 
-  //console.log(util.inspect(ast.body, false, 6, true));
+  console.log(util.inspect(ast.body, false, 6, true));
 
   function addText(value, node, parent) {
     // Conserve white space
@@ -133,11 +133,11 @@ if (module.parent) return;
 var acorn = require('acorn').parse;
 
 function roundTripped (code) {
-  var ast = acorn(code, { linePositions: true });
+  var ast = acorn(code, { linePositions: true, sourceFile: true });
   return redeyed(ast);
 }
 
 console.log('"' +
-  roundTripped("1 + 2") +
+  roundTripped('1 * 2  + 3') +
   '"'
 );
