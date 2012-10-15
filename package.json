@@ -21,7 +21,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "acorn": "0.0.1",
     "tap": "~0.3.1"
   }
 }
