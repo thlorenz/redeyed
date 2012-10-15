@@ -2,34 +2,69 @@
 /*jshint asi: true*/
 
 var test = require('tap').test
-  , parse = require('acorn').parse
-  , redeyed = require('..');
+  , util = require('util')
+  , redeyed = require('..')
 
-function roundTripped (code) {
-  var ast = parse(code, { linePositions: true });
-  return redeyed(ast);
+function inspect (obj) {
+  return util.inspect(obj, false, 5, true)
 }
 
-[ 'this' 
-, ' this' 
-, '  this' 
-, 'null' 
-, ' null' 
-, '42'
-, '  42'
-, '1+2'
-, '1 + 2'
-, '  1 + 2'
-, '  1  +  2'
-, '1 * 2  + 3'
-]
-//.slice(-1)
-.forEach(function (code) {
-  test('"' + code + '"', function (t) {
-    var rt = roundTripped(code);
-    // console.log('code: "%s"\nround: "%s"', code, rt);
-    t.equals(rt, code, '\b')
+test('adding custom asserts ... ', function (t) {
+  t.constructor.prototype.assertSurrounds = function (code, opts, expected) {
+    var result = redeyed(code, opts);
+    this.equals(result, expected, inspect(code) + ' => ' + inspect(expected))
+    return this;
+  }
+
+  t.end() 
+})
+test('\nkeywords', function (t) {
+
+  var opts001 = { Keyword: { _before: '*', _after: '&' } };  
+  t.test('\n# ' + inspect(opts001), function (t) {
+    t.assertSurrounds('this', opts001, '*this&')
+    t.assertSurrounds('this ', opts001, '*this& ')
+    t.assertSurrounds(' this', opts001, ' *this&')
+    t.assertSurrounds('  this  ', opts001, '  *this&  ')
+    t.assertSurrounds('if (a == 1) return', opts001, '*if& (a == 1) *return&')
+    t.assertSurrounds('var n = new Test();', opts001, '*var& n = *new& Test();')
+    t.assertSurrounds(
+        [ 'function foo (bar) {'
+        , ' var a = 3;'
+        , ' return bar + a;'
+        , '}'
+        ].join('\n')
+      , opts001
+      , [ '*function& foo (bar) {'
+        , ' *var& a = 3;'
+        , ' *return& bar + a;'
+        , '}'
+        ].join('\n'))
+    t.end()
+  })
+  
+  var opts002 = { 
+    Keyword: { 
+        'function': { _before: '^' }
+      , 'return': { _before: '(', _after: ')' }
+      ,  _before: '*'
+      , _after: '&' 
+    } 
+  };  
+
+  t.test('\n# ' + inspect(opts002), function (t) {
+    t.assertSurrounds(
+        [ 'function foo (bar) {'
+        , ' var a = 3;'
+        , ' return bar + a;'
+        , '}'
+        ].join('\n')
+      , opts002
+      , [ '^function& foo (bar) {'
+        , ' *var& a = 3;'
+        , ' (return) bar + a;'
+        , '}'
+        ].join('\n'))
     t.end()
   })
 })
-

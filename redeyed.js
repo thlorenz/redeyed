@@ -15,7 +15,7 @@ function isNumber (obj) {
 }
 
 function redeyed (code, opts) {
-  var parsed = esprima.parse(code, { tokens: true, range: true })
+  var parsed = esprima.parse(code, { tokens: true, range: true, tolerant: true })
     , tokens = parsed.tokens
     , lastSplitEnd = 0
     , splits = [];
@@ -50,7 +50,7 @@ function redeyed (code, opts) {
       surroundBefore = surround._before || surroundForType._before || opts._before || '';
       surroundAfter  = surround._after  || surroundForType._after  || opts._after  || '';
 
-      addSplit(lastSplitEnd, start - 1);
+      addSplit(lastSplitEnd, start);
       addSplit(start, end, surroundBefore, surroundAfter);
     }
   });
@@ -62,11 +62,16 @@ function redeyed (code, opts) {
   return splits.join('');
 }
 
+module.exports = redeyed;
+
+if (module.parent) return;
+
+
 // '\u001b[36m', '\u001b[39m'
 
 var opts = {
     Keyword: {
-        //'function' :  { before :  '__' ,  after :  '++' }
+        //'function' :  { _before :  '__' , _after :  '++' }
         'function' :  { _before :  '\u001b[36m' }
       , _before :  '\u001b[32m'
     }
@@ -74,8 +79,6 @@ var opts = {
   , _after :  '\u001b[39m' 
 
 };
-
-if (module.parent) return;
 
 console.log(
   redeyed('' + 
