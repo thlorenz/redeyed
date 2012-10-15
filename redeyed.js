@@ -30,8 +30,6 @@ function redeyed (code, opts) {
     lastSplitEnd = end;
   }
 
-  console.log(tokens);
-
   tokens.forEach(function (token) {
     var surroundForType = opts[token.type]
       , surroundDefault = opts.Default
