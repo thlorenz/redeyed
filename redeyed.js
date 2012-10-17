@@ -14,11 +14,47 @@ function isNumber (obj) {
   return toString.call(obj) == '[object Number]';
 }
 
+function isObject (obj) {
+  return toString.call(obj) == '[object Object]';
+}
+
+function normalize (parent) {
+  console.log('normalizing', parent);
+  Object.keys(parent)
+    .filter(function (key) { return key !== '_before' && key !== '_after'; })
+    .forEach(function (key) {
+      var value = parent[key]
+        , before
+        , after;
+
+      if (isObject(value)) return normalize(value);
+      if (!isString(value)) return; 
+
+      var vals = value.split(':');
+      if (0 === vals.length || vals.length > 2) 
+        throw new Error(
+          'illegal string config: ' + value +
+          '\nShould be of format "before:after"'
+        );
+
+      if (vals.length === 1) {
+        // ':after'
+        parent[key] = vals.indexOf(':') > 0 ?
+          { _after: vals[0] }               :
+          { _before: vals[0] } ;
+      } else {
+        parent[key] = { _before: vals[0], _after: vals[1] };
+      }
+    });
+}
+
 function redeyed (code, opts) {
   var parsed = esprima.parse(code, { tokens: true, range: true, tolerant: true })
     , tokens = parsed.tokens
     , lastSplitEnd = 0
     , splits = [];
+
+  normalize(opts);
 
   function addSplit (start, end, before, after) {
     if (start >= end) return;
@@ -40,13 +76,13 @@ function redeyed (code, opts) {
       , end;
      
     if (surroundForType) {
-      surround = surroundForType[token.value] || surroundForType;
+      surround = surroundForType[token.value] || surroundForType._default;
 
       start = token.range[0];
       end = token.range[1] + 1;
 
-      surroundBefore = surround._before || surroundForType._before || opts._before || '';
-      surroundAfter  = surround._after  || surroundForType._after  || opts._after  || '';
+      surroundBefore = surround._before || surroundForType._default._before || opts._default._before || '';
+      surroundAfter  = surround._after  || surroundForType._default._after  || opts._default._after  || '';
 
       addSplit(lastSplitEnd, start);
       addSplit(start, end, surroundBefore, surroundAfter);
