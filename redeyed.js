@@ -18,35 +18,60 @@ function isObject (obj) {
   return toString.call(obj) == '[object Object]';
 }
 
+function isFunction (obj) {
+  return toString.call(obj) == '[object Function]';
+}
+
+function prependValTo (val) {
+  return function (s) { return s + val; };
+}
+
+function appendValTo (val) {
+  return function (s) { return val + s; };
+}
+
+function surroundWith (before, after) {
+  return function (s) { return before + s + after; };
+}
+
+function normalizeStringConfig (value) {
+  var vals = value.split(':');
+
+  if (0 === vals.length || vals.length > 2) 
+    throw new Error(
+      'illegal string config: ' + value +
+      '\nShould be of format "before:after"'
+    );
+
+  if (vals.length === 1) {
+    return vals.indexOf(':') > 0 ? prependValTo(vals[0]) : appendValTo(vals[0]);
+  } else {
+    return surroundWith(vals[0], vals[1]);
+  }
+}
+
 function normalize (parent) {
   console.log('normalizing', parent);
   Object.keys(parent)
-    .filter(function (key) { return key !== '_before' && key !== '_after'; })
     .forEach(function (key) {
-      var value = parent[key]
-        , before
-        , after;
+      var value = parent[key];
 
-      if (isObject(value)) return normalize(value);
-      if (!isString(value)) return; 
+      if (isFunction(value)) return;
 
-      var vals = value.split(':');
-      if (0 === vals.length || vals.length > 2) 
-        throw new Error(
-          'illegal string config: ' + value +
-          '\nShould be of format "before:after"'
-        );
+      if (isObject(value)) {
+        if (value._before || value._after) 
+          return parent[key] = surroundWith (value._before || '', value._after || '');
 
-      if (vals.length === 1) {
-        // ':after'
-        parent[key] = vals.indexOf(':') > 0 ?
-          { _after: vals[0] }               :
-          { _before: vals[0] } ;
-      } else {
-        parent[key] = { _before: vals[0], _after: vals[1] };
+        return normalize(value);
       }
+
+      if (isString(value)) {
+        parent[key] = normalizeStringConfig(value);
+      }
+
     });
 }
+
 
 function redeyed (code, opts) {
   var parsed = esprima.parse(code, { tokens: true, range: true, tolerant: true })
@@ -56,10 +81,10 @@ function redeyed (code, opts) {
 
   normalize(opts);
 
-  function addSplit (start, end, before, after) {
+  function addSplit (start, end, surround) {
     if (start >= end) return;
-    if (before && after)
-      splits.push(before + code.slice(start, end) + after);
+    if (surround)
+      splits.push(surround(code.slice(start, end)));
     else
       splits.push(code.slice(start, end));
 
@@ -68,7 +93,7 @@ function redeyed (code, opts) {
 
   tokens.forEach(function (token) {
     var surroundForType = opts[token.type]
-      , surroundDefault = opts.Default
+      , surroundDefault = opts._default
       , surround
       , surroundBefore
       , surroundAfter 
@@ -81,11 +106,8 @@ function redeyed (code, opts) {
       start = token.range[0];
       end = token.range[1] + 1;
 
-      surroundBefore = surround._before || surroundForType._default._before || opts._default._before || '';
-      surroundAfter  = surround._after  || surroundForType._default._after  || opts._default._after  || '';
-
       addSplit(lastSplitEnd, start);
-      addSplit(start, end, surroundBefore, surroundAfter);
+      addSplit(start, end, surround);
     }
   });
 
