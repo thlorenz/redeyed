@@ -7,7 +7,7 @@ var esprima  =  require('esprima')
   ;
 
 function inspect (obj) {
-  return util.inspect(obj, false, 5, true)
+  return util.inspect(obj, false, 5, true);
 }
 
 function isString (obj) {
@@ -77,7 +77,6 @@ function objectize (node) {
     // normalize all strings to objects
     if (isString(value)) {
       node[key] = value = objectizeString(value);
-      console.log('%s: %s', key, inspect(value));
     }
     
     value._parent = node;
@@ -153,13 +152,11 @@ function redeyed (code, opts) {
 
   tokens.forEach(function (token) {
     var surroundForType = opts[token.type]
-      , surroundDefault = opts._default
       , surround
-      , surroundBefore
-      , surroundAfter 
       , start
       , end;
      
+    // At least the type (e.g., 'Keyword') needs to be specified for the token to be surrounded
     if (surroundForType) {
       surround = surroundForType[token.value] || surroundForType._default;
 

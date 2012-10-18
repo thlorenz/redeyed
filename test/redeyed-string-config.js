@@ -53,3 +53,65 @@ test('\nstring config, keywords', function (t) {
     t.end()
   })
 })
+
+test('\nstring configs resolve from type and root', function (t) {
+  var code = 'var a = new Test();'
+  
+  function run(t, conf, expected, msg) {
+    t.test('\n# ' + (msg ? msg + ': ' : '') + inspect(conf), function (t) {
+      t.assertSurrounds(code, conf, expected);
+      t.end()
+    })
+  }
+
+  // at least the token kind has to be configured in order for the root_default to be applied
+  // otherwise a root._default would affect all tokens, even the ones we want to leave unchanged
+  run(t, { _default: '*:' }, 'var a = new Test();')
+
+  t.test('\n\n# only before or after specified, but no root._default', function (t) {
+    run(t, { Keyword: { _default: '*:' } }, '*var a = *new Test();')
+    run(t, { Keyword: { _default: ':-' } }, 'var- a = new- Test();')
+    t.end()
+  })
+
+  t.test('\n\n# resolve missing from root._default', function (t) {
+    run(t, { Keyword: { _default: '*:' }, _default: '(:-' }, '*var- a = *new- Test();')
+    run(t, { Keyword: { _default: ':-' }, _default: '*:)' }, '*var- a = *new- Test();')
+    t.end()
+  })
+
+  t.test('\n\n# no resolve if all specified', function (t) {
+    run(t, { Keyword: { _default: '+:-' }, _default: '*:)' }, '+var- a = +new- Test();')
+    run(t, { Keyword: { _default: ':-' }, _default: ':)' }, 'var- a = new- Test();')
+    t.end()
+  })
+
+  t.test('\n\n# resolve specific token no defaults', function (t) {
+    run(t, { Keyword: { 'var': '*:' } }, '*var a = new Test();')
+    run(t, { Keyword: { 'var': ':-' } }, 'var- a = new Test();')
+    t.end()
+  })
+
+  t.test('\n\n# resolve specific token with type defaults', function (t) {
+    run(t, { Keyword: { 'var': '*:', _default: ':-' } }, '*var- a = new- Test();')
+    run(t, { Keyword: { 'var': '*:', _default: '(:-' } }, '*var- a = (new- Test();')
+    run(t, { Keyword: { 'var': ':-', _default: '*:' } }, '*var- a = *new Test();')
+    run(t, { Keyword: { 'var': ':-', _default: '*:)' } }, '*var- a = *new) Test();')
+    run(t, { Keyword: { 'var': ':-', 'new': ':&', _default: '*:' } }, '*var- a = *new& Test();')
+    t.end()
+  })
+
+  t.test('\n\n# resolve specific token with root defaults', function (t) {
+    run(t, { Keyword: { 'var': '*:' }, _default: ':-' }, '*var- a = new Test();')
+    run(t, { Keyword: { 'var': ':-' }, _default: '*:' }, '*var- a = new Test();')
+    t.end()
+  })
+
+  t.test('\n\n# resolve specific token with type and root defaults', function (t) {
+    run(t, { Keyword: { 'var': '*:', _default: '+:-' }, _default: ':)' }, '*var- a = +new- Test();')
+    run(t, { Keyword: { 'var': ':-', _default: '*:+' }, _default: '(:' }, '*var- a = *new+ Test();')
+    t.end()
+  })
+  
+  t.end()
+})
