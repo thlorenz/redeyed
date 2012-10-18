@@ -19,7 +19,7 @@ test('adding custom asserts ... ', function (t) {
   t.end() 
 })
 
-test('\nstring config, keywords', function (t) {
+test('\nfunction config, keywords', function (t) {
 
   var opts001 = { Keyword: { _default: function (s) { return '*' + s + '&'; } } };
   t.test('\n# ' + inspect(opts001), function (t) {
@@ -67,5 +67,75 @@ test('\nstring config, keywords', function (t) {
         , '}'
         ].join('\n'))
     t.end()
+  })
+})
+
+test('#\n functin config - resolving', function (t) {
+  var opts001 = { 
+      Keyword: { 
+        'var': function (s) { return '^' + s + '&' }
+      }
+    , _default: function (s) { return '*' + s + '&' }
+  };  
+  t.test('\n# type default and root default (type wins)' + inspect(opts001), function (t) {
+    t.assertSurrounds('var n = new Test();', opts001, '^var& n = *new& Test();').end();
+  })
+
+  var opts002 = { 
+      Keyword: { 
+        'var': function (s) { return '^' + s + '&' }
+      , _default: function (s) { return '*' + s + '&' }
+      }
+    , _default: function (s) { return '(' + s + ')' }
+  };  
+  t.test('\n# no type default but root default' + inspect(opts002), function (t) {
+    t.assertSurrounds('var n = new Test();', opts002, '^var& n = *new& Test();').end();
+  })
+})
+
+test('#\n function config - replacing', function (t) {
+  var opts001 = { 
+      Keyword: { 
+        'var': function () { return 'const' }
+      }
+  };  
+  t.test('\n# type default and root default (type wins)' + inspect(opts001), function (t) {
+    t.assertSurrounds('var n = new Test();', opts001, 'const n = new Test();').end();
+  })
+
+  var opts002 = { 
+      Keyword: { 
+        _default: function () { return 'const' }
+      }
+  };  
+  t.test('\n# type default and root default (type wins)' + inspect(opts002), function (t) {
+    t.assertSurrounds('var n = new Test();', opts002, 'const n = const Test();').end();
+  })
+  
+  var opts003 = { 
+      Keyword: { 
+          'new': function () { return 'NEW'; }
+        , _default: function () { return 'const' }
+      }
+  };  
+  t.test('\n# type default and root default (type wins)' + inspect(opts003), function (t) {
+    t.assertSurrounds('var n = new Test();', opts003, 'const n = NEW Test();').end();
+  })
+
+  var opts004 = { 
+      Keyword: { 
+        _default: function (s) { return s.toUpperCase() }
+      }
+  };  
+  t.test('\n# type default and root default (type wins)' + inspect(opts004), function (t) {
+    t.assertSurrounds('var n = new Test();', opts004, 'VAR n = NEW Test();').end();
+  })
+
+  var opts005 = { 
+        Keyword: { }
+      , _default: function (s) { return s.toUpperCase() }
+  };  
+  t.test('\n# type default and root default (type wins)' + inspect(opts005), function (t) {
+    t.assertSurrounds('var n = new Test();', opts005, 'VAR n = NEW Test();').end();
   })
 })

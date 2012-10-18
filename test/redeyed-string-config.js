@@ -57,8 +57,8 @@ test('\nstring config, keywords', function (t) {
 test('\nstring configs resolve from type and root', function (t) {
   var code = 'var a = new Test();'
   
-  function run(t, conf, expected, msg) {
-    t.test('\n# ' + (msg ? msg + ': ' : '') + inspect(conf), function (t) {
+  function run(t, conf, expected) {
+    t.test('\n# '  + inspect(conf), function (t) {
       t.assertSurrounds(code, conf, expected);
       t.end()
     })
@@ -102,8 +102,8 @@ test('\nstring configs resolve from type and root', function (t) {
   })
 
   t.test('\n\n# resolve specific token with root defaults', function (t) {
-    run(t, { Keyword: { 'var': '*:' }, _default: ':-' }, '*var- a = new Test();')
-    run(t, { Keyword: { 'var': ':-' }, _default: '*:' }, '*var- a = new Test();')
+    run(t, { Keyword: { 'var': '*:' }, _default: ':-' }, '*var- a = new- Test();')
+    run(t, { Keyword: { 'var': ':-' }, _default: '*:' }, '*var- a = *new Test();')
     t.end()
   })
 

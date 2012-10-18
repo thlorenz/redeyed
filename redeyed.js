@@ -158,7 +158,7 @@ function redeyed (code, opts) {
      
     // At least the type (e.g., 'Keyword') needs to be specified for the token to be surrounded
     if (surroundForType) {
-      surround = surroundForType[token.value] || surroundForType._default;
+      surround = surroundForType[token.value] || surroundForType._default || opts._default;
 
       start = token.range[0];
       end = token.range[1] + 1;
