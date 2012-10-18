@@ -6,6 +6,10 @@ var esprima  =  require('esprima')
   , toString =  Object.prototype.toString
   ;
 
+function inspect (obj) {
+  return util.inspect(obj, false, 5, true)
+}
+
 function isString (obj) {
   return toString.call(obj) == '[object String]';
 }
@@ -22,19 +26,15 @@ function isFunction (obj) {
   return toString.call(obj) == '[object Function]';
 }
 
-function prependValTo (val) {
-  return function (s) { return s + val; };
-}
-
-function appendValTo (val) {
-  return function (s) { return val + s; };
-}
-
 function surroundWith (before, after) {
   return function (s) { return before + s + after; };
 }
 
-function normalizeStringConfig (value) {
+function isNonCircular(key) { 
+  return key !== '_parent'; 
+}
+
+function objectizeString (value) {
   var vals = value.split(':');
 
   if (0 === vals.length || vals.length > 2) 
@@ -43,33 +43,93 @@ function normalizeStringConfig (value) {
       '\nShould be of format "before:after"'
     );
 
-  if (vals.length === 1) {
-    return vals.indexOf(':') > 0 ? prependValTo(vals[0]) : appendValTo(vals[0]);
+  if (vals.length === 1 || vals[1].length === 0) {
+    return vals.indexOf(':') < 0 ? { _before: vals[0] } : { _after: vals[0] };
   } else {
-    return surroundWith(vals[0], vals[1]);
+    return { _before: vals[0], _after: vals[1] };
   }
 }
 
-function normalize (parent) {
-  console.log('normalizing', parent);
-  Object.keys(parent)
+function objectize (node) {
+
+  // Converts 'bef:aft' to { _before: bef, _after: aft } 
+  // and resolves undefined before/after from parent or root
+
+  function resolve (value, key) {
+    // resolve before/after from root or parent if it isn't present on the current node
+    if (!value._parent) return undefined;
+    
+    // Immediate parent
+    if (value._parent._default && value._parent._default[key]) return value._parent._default[key];
+
+    // Root
+    var root = value._parent._parent;
+    if (!root) return undefined;
+
+    return root._default ? root._default[key] : undefined;
+  }
+
+  function process (key) {
+    var value = node[key];
+
+    if (isFunction(value)) return;
+
+    // normalize all strings to objects
+    if (isString(value)) {
+      node[key] = value = objectizeString(value);
+      console.log('%s: %s', key, inspect(value));
+    }
+    
+    value._parent = node;
+    if (isObject(value)) {
+      if (!value._before && !value._after) return objectize (value);
+
+      // resolve missing _before or _after from parent(s) 
+      // in case we only have either one on this node
+      value._before =  value._before || resolve(value, '_before');
+      value._after  =  value._after  || resolve(value, '_after');
+      
+      return;
+    } 
+
+    throw new Error('nodes need to be either {String}, {Object} or {Function}.' + value + ' is neither.');
+  }
+
+  // Process _default ones first so children can resolve missing before/after from them
+  if (node._default) process('_default');
+
+  Object.keys(node)
+    .filter(function (key) {
+      return isNonCircular(key) && key !== '_before' && key !== '_after' && key !== '_default';
+    })
+    .forEach(process);
+}
+
+function functionize (node) {
+  Object.keys(node)
+    .filter(isNonCircular)
     .forEach(function (key) {
-      var value = parent[key];
+      var value = node[key];
 
       if (isFunction(value)) return;
 
       if (isObject(value)) {
-        if (value._before || value._after) 
-          return parent[key] = surroundWith (value._before || '', value._after || '');
 
-        return normalize(value);
+        if (!value._before && !value._after) return functionize(value);
+
+        // at this point before/after were "inherited" from the parent or root
+        // (see objectize)
+        var before = value._before || '';
+        var after = value._after || '';
+
+        return node[key] = surroundWith (before, after);
       }
-
-      if (isString(value)) {
-        parent[key] = normalizeStringConfig(value);
-      }
-
     });
+}
+
+function normalize (root) {
+  objectize(root);
+  functionize(root);
 }
 
 
@@ -79,7 +139,7 @@ function redeyed (code, opts) {
     , lastSplitEnd = 0
     , splits = [];
 
-  normalize(opts);
+  normalize(opts, opts);
 
   function addSplit (start, end, surround) {
     if (start >= end) return;

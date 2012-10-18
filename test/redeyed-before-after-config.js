@@ -23,23 +23,8 @@ test('\nbefore/after config, keywords', function (t) {
   var opts001 = { Keyword: { _default: { _before: '*', _after: '&' } } };  
   t.test('\n# ' + inspect(opts001), function (t) {
     t.assertSurrounds('this', opts001, '*this&')
-    t.assertSurrounds('this ', opts001, '*this& ')
-    t.assertSurrounds(' this', opts001, ' *this&')
-    t.assertSurrounds('  this  ', opts001, '  *this&  ')
     t.assertSurrounds('if (a == 1) return', opts001, '*if& (a == 1) *return&')
     t.assertSurrounds('var n = new Test();', opts001, '*var& n = *new& Test();')
-    t.assertSurrounds(
-        [ 'function foo (bar) {'
-        , ' var a = 3;'
-        , ' return bar + a;'
-        , '}'
-        ].join('\n')
-      , opts001
-      , [ '*function& foo (bar) {'
-        , ' *var& a = 3;'
-        , ' *return& bar + a;'
-        , '}'
-        ].join('\n'))
     t.end()
   })
   
