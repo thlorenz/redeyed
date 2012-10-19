@@ -138,6 +138,8 @@ function redeyed (code, opts) {
     , lastSplitEnd = 0
     , splits = [];
 
+  // console.log(inspect(tokens));
+
   normalize(opts, opts);
 
   function addSplit (start, end, surround) {
