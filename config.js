@@ -69,6 +69,7 @@ module.exports = {
   , 'Punctuator': {
       ';': undefined  
     , '.': undefined  
+    , ',': undefined  
 
     , '{': undefined  
     , '}': undefined  
