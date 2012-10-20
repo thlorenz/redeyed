@@ -134,6 +134,9 @@ function normalize (root) {
 
 
 function redeyed (code, opts) {
+  // remove shebang
+  code = code.replace(/^\#\!.*/, '');
+
   var parsed = esprima.parse(code, { tokens: true, range: true, tolerant: true })
     , tokens = parsed.tokens
     , lastSplitEnd = 0
