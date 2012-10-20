@@ -77,8 +77,8 @@ test('#\n functin config - resolving', function (t) {
       }
     , _default: function (s) { return '*' + s + '&' }
   };  
-  t.test('\n# type default and root default (type wins)' + inspect(opts001), function (t) {
-    t.assertSurrounds('var n = new Test();', opts001, '^var& n = *new& Test();').end();
+  t.test('\n# specific but no type default and root default - root default not applied' + inspect(opts001), function (t) {
+    t.assertSurrounds('var n = new Test();', opts001, '^var& n = new Test();').end();
   })
 
   var opts002 = { 
@@ -108,7 +108,7 @@ test('#\n function config - replacing', function (t) {
         _default: function () { return 'const' }
       }
   };  
-  t.test('\n# type default and root default (type wins)' + inspect(opts002), function (t) {
+  t.test('\n# type default' + inspect(opts002), function (t) {
     t.assertSurrounds('var n = new Test();', opts002, 'const n = const Test();').end();
   })
   
@@ -118,7 +118,7 @@ test('#\n function config - replacing', function (t) {
         , _default: function () { return 'const' }
       }
   };  
-  t.test('\n# type default and root default (type wins)' + inspect(opts003), function (t) {
+  t.test('\n# specific and type default' + inspect(opts003), function (t) {
     t.assertSurrounds('var n = new Test();', opts003, 'const n = NEW Test();').end();
   })
 
@@ -126,6 +126,7 @@ test('#\n function config - replacing', function (t) {
       Keyword: { 
         _default: function (s) { return s.toUpperCase() }
       }
+      , _default: function (s) { return 'not applied'; }
   };  
   t.test('\n# type default and root default (type wins)' + inspect(opts004), function (t) {
     t.assertSurrounds('var n = new Test();', opts004, 'VAR n = NEW Test();').end();
@@ -135,7 +136,7 @@ test('#\n function config - replacing', function (t) {
         Keyword: { }
       , _default: function (s) { return s.toUpperCase() }
   };  
-  t.test('\n# type default and root default (type wins)' + inspect(opts005), function (t) {
-    t.assertSurrounds('var n = new Test();', opts005, 'VAR n = NEW Test();').end();
+  t.test('\n# no type default only root default - not applied' + inspect(opts005), function (t) {
+    t.assertSurrounds('var n = new Test();', opts005, 'var n = new Test();').end();
   })
 })

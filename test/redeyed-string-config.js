@@ -101,11 +101,14 @@ test('\nstring configs resolve from type and root', function (t) {
     t.end()
   })
 
-  t.test('\n\n# resolve specific token with root defaults', function (t) {
-    run(t, { Keyword: { 'var': '*:' }, _default: ':-' }, '*var- a = new- Test();')
-    run(t, { Keyword: { 'var': ':-' }, _default: '*:' }, '*var- a = *new Test();')
-    t.end()
-  })
+  t.test(
+      '\n\n# resolve specific token with root defaults, but no type default - root default not applied to unspecified tokens'
+    , function (t) {
+        run(t, { Keyword: { 'var': '*:' }, _default: ':-' }, '*var- a = new Test();')
+        run(t, { Keyword: { 'var': ':-' }, _default: '*:' }, '*var- a = new Test();')
+        t.end()
+      }
+  )
 
   t.test('\n\n# resolve specific token with type and root defaults', function (t) {
     run(t, { Keyword: { 'var': '*:', _default: '+:-' }, _default: ':)' }, '*var- a = +new- Test();')

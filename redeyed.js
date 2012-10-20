@@ -72,6 +72,7 @@ function objectize (node) {
   function process (key) {
     var value = node[key];
 
+    if (!value) return;
     if (isFunction(value)) return;
 
     // normalize all strings to objects
@@ -160,7 +161,10 @@ function redeyed (code, opts) {
      
     // At least the type (e.g., 'Keyword') needs to be specified for the token to be surrounded
     if (surroundForType) {
-      surround = surroundForType[token.value] || surroundForType._default || opts._default;
+
+      // root defaults are only taken into account while resolving before/after otherwise
+      // a root default would apply to everything, even if no type default was specified
+      surround = surroundForType[token.value] || surroundForType._default;
 
       start = token.range[0];
       end = token.range[1] + 1;
