@@ -44,7 +44,8 @@ For the `{String}` and `{Object}` configurations, 'before' or 'after' may be omi
   - `{ _before: 'before' }` (omitting '_after')
   - `{ _after: 'after' }` (omitting '_before')
 
-In these cases the missing half is resolved as follows
+In these cases the missing half is resolved as follows:
+
 - from the `parent._default` (i.e., `Keyword._default`) if found
 - otherwise from the `config._default` if found
 - otherwise `''` (empty string)
@@ -59,7 +60,7 @@ var redeyed = require('redeyed')
   , code = 'var a = 3;'
   , result;
 
-// redeyed will throw an error (caused by esprima parser) if the code is not invalid javascript
+// redeyed will throw an error (caused by the esprima parser) if the code has invalid javascript
 try {
   result = redeyed(code, config);
   console.log(result);
@@ -70,5 +71,5 @@ try {
 
 ## redeyed in the wild
 
-- [cardinal](https://github.com/thlorenz/cardinal) Syntax highlights JavaScript code with ANSI colors to be printed to
+- [cardinal](https://github.com/thlorenz/cardinal): Syntax highlights JavaScript code with ANSI colors to be printed to
   the terminal
