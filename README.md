@@ -1,11 +1,10 @@
 # redeyed [![Build Status](https://secure.travis-ci.org/thlorenz/redeyed.png)](http://travis-ci.org/thlorenz/redeyed)
 
-*Add color to your syntax tree!*
+*Add color to your JavaScript!*
 
 ![frog](http://allaboutfrogs.org/gallery/photos/redeyes/red1.gif)
 
 [Red Eyed Tree Frog](http://allaboutfrogs.org/info/species/redeye.html) (*Agalychnis callidryas*)
-
 
 ## What?
 
