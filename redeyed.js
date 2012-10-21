@@ -100,14 +100,20 @@ function objectize (node) {
 
   Object.keys(node)
     .filter(function (key) {
-      return isNonCircular(key) && key !== '_before' && key !== '_after' && key !== '_default';
+      return isNonCircular(key) 
+        && node.hasOwnProperty(key)
+        && key !== '_before' 
+        && key !== '_after' 
+        && key !== '_default';
     })
     .forEach(process);
 }
 
 function functionize (node) {
   Object.keys(node)
-    .filter(isNonCircular)
+    .filter(function (key) { 
+      return isNonCircular(key) && node.hasOwnProperty(key);
+    })
     .forEach(function (key) {
       var value = node[key];
 
@@ -131,7 +137,6 @@ function normalize (root) {
   objectize(root);
   functionize(root);
 }
-
 
 function redeyed (code, opts) {
   // remove shebang
@@ -167,7 +172,9 @@ function redeyed (code, opts) {
 
       // root defaults are only taken into account while resolving before/after otherwise
       // a root default would apply to everything, even if no type default was specified
-      surround = surroundForType[token.value] || surroundForType._default;
+      surround = surroundForType && surroundForType.hasOwnProperty(token.value)
+        ? surroundForType[token.value] 
+        : surroundForType._default;
 
       start = token.range[0];
       end = token.range[1] + 1;

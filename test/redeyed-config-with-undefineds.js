@@ -47,7 +47,7 @@ test('\n mixed', function (t) {
   t.assertSurrounds(
       'return true || false'
     , { 'Boolean': { 'true': '&:', 'false': undefined, _default: ':?' } , _default: undefined }
-    , 'return &true? || false?'
+    , 'return &true? || false'
   )
 
   t.assertSurrounds(
