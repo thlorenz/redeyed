@@ -8,7 +8,7 @@
 
 ## What?
 
-Takes JavaScript code, along with a config and returns the original code with words wrapped and/or replaced as configured.
+Takes JavaScript code, along with a config and returns the original code with tokens wrapped and/or replaced as configured.
 
 ## What for?
 
