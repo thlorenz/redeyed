@@ -17,21 +17,41 @@ One usecase is adding metadata to your code that can then be used to apply synta
 
 ## How?
 
-- copy and edit the [config.js](https://github.com/thlorenz/redeyed/blob/master/config.js) to specify how certain tokens
-  are to be surrounded/replaced
-- replace the `undefined` of each token you want to configure with one of the following:
-  - `{String}` `'before:after'`: wraps the token inside before/after 
-  - `{Object}` `{ _before: 'before', _after: 'after' }: wraps token inside before/after
-  - `{Function}` `function (s) { return 'replacement for s'; }`: replaces the token with whatever is returned by the
-    provided funtion
-- for the `{String}` and `{Object}` configurations, 'before' or 'after' may be omitted:
-  - `{String}`: `'before:'` (omitting 'after'), `':after'` (omitting 'before')
-  - `{Object}`: `{ _before: 'before }` (omitting '_after'), `{ _after: 'after' }` (omitting '_before')
-  - in these cases the missing half is resolved as follows
-    - from the `parent._default` (i.e., `Keyword._default`) if found
-    - otherwise from the `config._default` if found
-    - otherwise `''` (empty string)
-- finally invoke redeyed with or configuration and a code snippet as in the below example
+- copy the [config.js](https://github.com/thlorenz/redeyed/blob/master/config.js) and edit it in order to specify how
+  certain tokens are to be surrounded/replaced
+- replace the `undefined` of each token you want to configure with one of the following
+
+### {String} config
+
+`'before:after'`: wraps the token inside before/after 
+
+### {Object} config
+
+`{ _before: 'before', _after: 'after' }`: wraps token inside before/after
+
+### {Function} config
+
+`function (s) { return 'replacement for s'; }`: replaces the token with whatever is returned by the provided function
+
+### Missing before and after resolution
+
+For the `{String}` and `{Object}` configurations, 'before' or 'after' may be omitted:
+
+- `{String}`: 
+  - `'before:'` (omitting 'after')
+  - `':after'` (omitting 'before')
+- `{Object}`: 
+  - `{ _before: 'before' }` (omitting '_after')
+  - `{ _after: 'after' }` (omitting '_before')
+
+In these cases the missing half is resolved as follows
+- from the `parent._default` (i.e., `Keyword._default`) if found
+- otherwise from the `config._default` if found
+- otherwise `''` (empty string)
+
+### Transforming JavaScript code
+
+Invoke redeyed with your configuration and a code snippet as in the below example:
 
 ```javascript
 var redeyed = require('redeyed')
