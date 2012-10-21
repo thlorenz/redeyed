@@ -185,30 +185,3 @@ function redeyed (code, opts) {
 }
 
 module.exports = redeyed;
-
-if (module.parent) return;
-
-
-// '\u001b[36m', '\u001b[39m'
-
-var opts = {
-    Keyword: {
-        //'function' :  { _before :  '__' , _after :  '++' }
-        'function' :  { _before :  '\u001b[36m' }
-      , _before :  '\u001b[32m'
-    }
-  , _before: ''
-  , _after :  '\u001b[39m' 
-
-};
-
-console.log(
-  redeyed('' + 
-
-function foo () {
-  return true;
-} 
-
-+ '', opts)
-);
-
