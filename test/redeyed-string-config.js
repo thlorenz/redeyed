@@ -57,9 +57,9 @@ test('\nstring config, keywords', function (t) {
 test('\nstring configs resolve from type and root', function (t) {
   var code = 'var a = new Test();'
   
-  function run(t, conf, expected) {
+  function run(t, conf, expected, code_) {
     t.test('\n# '  + inspect(conf), function (t) {
-      t.assertSurrounds(code, conf, expected);
+      t.assertSurrounds(code_ || code, conf, expected);
       t.end()
     })
   }
@@ -114,6 +114,10 @@ test('\nstring configs resolve from type and root', function (t) {
     run(t, { Keyword: { 'var': '*:', _default: '+:-' }, _default: ':)' }, '*var- a = +new- Test();')
     run(t, { Keyword: { 'var': ':-', _default: '*:+' }, _default: '(:' }, '*var- a = *new+ Test();')
     t.end()
+  })
+
+  t.test('all exact tokens undefined, but type default', function (t) {
+    run(t, { 'Boolean': { 'true': undefined, 'false': undefined, _default: '+:-' } }, 'return +true- || +false-;', 'return true || false;')
   })
   
   t.end()

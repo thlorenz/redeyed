@@ -172,7 +172,7 @@ function redeyed (code, opts) {
 
       // root defaults are only taken into account while resolving before/after otherwise
       // a root default would apply to everything, even if no type default was specified
-      surround = surroundForType && surroundForType.hasOwnProperty(token.value)
+      surround = surroundForType && surroundForType.hasOwnProperty(token.value) && surroundForType[token.value]
         ? surroundForType[token.value] 
         : surroundForType._default;
 
