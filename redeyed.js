@@ -138,18 +138,21 @@ function normalize (root) {
   functionize(root);
 }
 
-function redeyed (code, opts) {
+function redeyed (code, config, opts) {
+  opts = opts || {};
+
   // remove shebang
   code = code.replace(/^\#\!.*/, '');
 
-  var parsed = esprima.parse(code, { tokens: true, range: true, tolerant: true })
-    , tokens = parsed.tokens
+  var ast = esprima.parse(code, { tokens: true, range: true, tolerant: true })
+    , tokens = ast.tokens
     , lastSplitEnd = 0
-    , splits = [];
+    , splits = []
+    , result;
 
   // console.log(inspect(tokens));
 
-  normalize(opts, opts);
+  normalize(config);
 
   function addSplit (start, end, surround, tokenIdx, tokens) {
     if (start >= end) return;
@@ -163,7 +166,7 @@ function redeyed (code, opts) {
 
   for (var tokenIdx = 0; tokenIdx < tokens.length; tokenIdx++) {
     var token = tokens[tokenIdx]
-      , surroundForType = opts[token.type]
+      , surroundForType = config[token.type]
       , surround
       , start
       , end;
@@ -192,7 +195,12 @@ function redeyed (code, opts) {
     addSplit(lastSplitEnd, code.length);
   }
 
-  return splits.join('');
+  result = opts.splits ? splits : splits.join('');
+  // pass out result of all the work esprima did for us in case it is to be used for other things
+  result.ast = ast;
+  result.tokens = tokens;
+
+  return result;
 }
 
 module.exports = redeyed;

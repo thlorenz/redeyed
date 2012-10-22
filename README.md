@@ -51,7 +51,9 @@ In these cases the missing half is resolved as follows:
 
 ### Transforming JavaScript code
 
-Invoke redeyed with your configuration and a code snippet as in the below example:
+***redeyed(code, config[, opts])***
+
+Invoke redeyed with your **config**uration, a **code** snippet and maybe **opts** as in the below example:
 
 ```javascript
 var redeyed = require('redeyed')
@@ -65,6 +67,16 @@ try {
   console.log(result);
 } catch(err) {
   console.error(err);
+}
+```
+
+***opts***:
+```js
+{ 
+  // {Boolean}
+  // if true returns the {Array} of pieces into which the transformed code is split up 
+  // if false returns the splits join('')ed into a {String}
+  splits: true|false
 }
 ```
 
