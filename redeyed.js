@@ -151,18 +151,19 @@ function redeyed (code, opts) {
 
   normalize(opts, opts);
 
-  function addSplit (start, end, surround) {
+  function addSplit (start, end, surround, tokenIdx, tokens) {
     if (start >= end) return;
     if (surround)
-      splits.push(surround(code.slice(start, end)));
+      splits.push(surround(code.slice(start, end), tokenIdx, tokens));
     else
       splits.push(code.slice(start, end));
 
     lastSplitEnd = end;
   }
 
-  tokens.forEach(function (token) {
-    var surroundForType = opts[token.type]
+  for (var tokenIdx = 0; tokenIdx < tokens.length; tokenIdx++) {
+    var token = tokens[tokenIdx]
+      , surroundForType = opts[token.type]
       , surround
       , start
       , end;
@@ -183,9 +184,9 @@ function redeyed (code, opts) {
       end = token.range[1];
 
       addSplit(lastSplitEnd, start);
-      addSplit(start, end, surround);
+      addSplit(start, end, surround, tokenIdx, tokens);
     }
-  });
+  }
 
   if (lastSplitEnd < code.length) {
     addSplit(lastSplitEnd, code.length);
