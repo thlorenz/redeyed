@@ -25,6 +25,6 @@
     "readdirp": "~0.2.1"
   },
   "dependencies": {
-    "esprima": "~0.9.9"
+    "esprima": "~1.0.0"
   }
 }

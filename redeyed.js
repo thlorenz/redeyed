@@ -180,7 +180,7 @@ function redeyed (code, opts) {
           : surroundForType._default;
 
       start = token.range[0];
-      end = token.range[1] + 1;
+      end = token.range[1];
 
       addSplit(lastSplitEnd, start);
       addSplit(start, end, surround);
