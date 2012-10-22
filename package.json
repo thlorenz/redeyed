@@ -1,6 +1,6 @@
 {
   "name": "redeyed",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Takes JavaScript code, along with a config and returns the original code with tokens wrapped as configured.",
   "author": "Thorsten Lorenz <thlorenz@gmx.de> (thlorenz.com)",
   "main": "redeyed.js",
