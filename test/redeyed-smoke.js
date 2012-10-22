@@ -42,3 +42,16 @@ test('esprima', function (t) {
     })
     .on('end', t.end.bind(t))
 })
+
+test('redeyed', function (t) {
+
+  readdirp({ root: path.join(__dirname, '..'), fileFilter: '*.js', directoryFilter: ['!.git', '!node_modules' ] })
+    .on('data', function (entry) {
+      
+      var code = fs.readFileSync(entry.fullPath, 'utf-8')
+        , result = redeyed(code, { Keyword: { 'var': '+:-' } })
+
+        t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
+    })
+    .on('end', t.end.bind(t))
+})
