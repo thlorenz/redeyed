@@ -144,11 +144,12 @@ function redeyed (code, config, opts) {
   // remove shebang
   code = code.replace(/^\#\!.*/, '');
 
-  var ast = esprima.parse(code, { tokens: true, range: true, tolerant: true })
+  var ast = esprima.parse(code, { tokens: true, comments: true, range: true, tolerant: true })
     , tokens = ast.tokens
+    , comments = ast.comments
     , lastSplitEnd = 0
     , splits = []
-    , result;
+    , transformedCode;
 
   // console.log(inspect(tokens));
 
@@ -195,12 +196,15 @@ function redeyed (code, config, opts) {
     addSplit(lastSplitEnd, code.length);
   }
 
-  result = opts.splits ? splits : splits.join('');
-  // pass out result of all the work esprima did for us in case it is to be used for other things
-  result.ast = ast;
-  result.tokens = tokens;
+  transformedCode = opts.nojoin ? undefined : splits.join('');
 
-  return result;
+  return { 
+      ast      :  ast
+    , tokens   :  tokens
+    , comments :  comments
+    , splits   :  splits
+    , code     :  transformedCode
+  };
 }
 
 module.exports = redeyed;

@@ -23,7 +23,7 @@ test('tap', function (t) {
       if (~invalidTapFiles.indexOf(entry.name)) return
 
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } })
+        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
 
       t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
     })
@@ -36,7 +36,7 @@ test('esprima', function (t) {
     .on('data', function (entry) {
       
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } })
+        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
 
       t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
     })
@@ -49,9 +49,8 @@ test('redeyed', function (t) {
     .on('data', function (entry) {
       
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } })
+        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
 
-        console.log(result)
         t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
     })
     .on('end', t.end.bind(t))

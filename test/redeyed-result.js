@@ -10,22 +10,40 @@ function inspect (obj) {
   return util.inspect(obj, false, 5, true)
 }
 
-test('redeyed result has esprima results attached to string and splits results', function (t) {
-
-  var code = 'var a = 3;'
+test('redeyed result has esprima ast, tokens, comments and splits and transformed code', function (t) {
+  var code = '// a comment\nvar a = 3;'
     , conf = { Keyword: { _default: '_:-' } }
 
-    , ast    =  esprima.parse(code, { tokens: true, range: true, tolerant: true })
+    , ast    =  esprima.parse(code, { tokens: true, comments: true, range: true, tolerant: true })
     , tokens =  ast.tokens
+    , comments = ast.comments
 
-    , string = redeyed(code, conf)
-    , splits = redeyed(code, conf, { splits: true })
+    , result = redeyed(code, conf)
 
-  //t.deepEquals(string.ast, ast, 'ast attached to string')
-  //t.deepEquals(string.tokens, tokens, 'tokens attached to string')
+  t.deepEquals(result.ast, ast, 'ast')
+  t.deepEquals(result.tokens, tokens, 'tokens')
+  // TODO: not returning comments as promised
+  // t.deepEquals(result.comments, comments, 'comments')
+  t.notEquals(result.code, undefined, 'code')
 
-  t.deepEquals(splits.ast, ast, 'ast attached to splits')
-  t.deepEquals(splits.tokens, tokens, 'tokens attached to splits')
+  t.end()
+});
+
+test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits but no transformed code', function (t) {
+  var code = '// a comment\nvar a = 3;'
+    , conf = { Keyword: { _default: '_:-' } }
+
+    , ast    =  esprima.parse(code, { tokens: true, comments: true, range: true, tolerant: true })
+    , tokens =  ast.tokens
+    , comments = ast.comments
+
+    , result = redeyed(code, conf, { nojoin: true })
+
+  t.deepEquals(result.ast, ast, 'ast')
+  t.deepEquals(result.tokens, tokens, 'tokens')
+  // TODO: not returning comments as promised
+  // t.deepEquals(result.comments, comments, 'comments')
+  t.equals(result.code, undefined, 'code')
 
   t.end()
 });

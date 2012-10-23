@@ -16,7 +16,8 @@ test('removes shebang from the code before parsing it', function (t) {
       ].join('\n')
     , opts = { Keyword: { 'var': '%:^' } }
     , expected = '\n%var^ util = require("util");'
-    , res = redeyed(code, opts);
+    , res = redeyed(code, opts).code
+
   t.equals(res, expected, inspect(code) + ' opts: ' + inspect(opts) + ' => ' + inspect(expected))
   t.end()
 })

@@ -11,7 +11,7 @@ function inspect (obj) {
 
 test('adding custom asserts ... ', function (t) {
   t.constructor.prototype.assertSurrounds = function (code, opts, expected) {
-    var result = redeyed(code, opts);
+    var result = redeyed(code, opts).code
     this.equals(result, expected, inspect(code) + ' => ' + inspect(expected))
     return this;
   }
