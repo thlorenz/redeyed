@@ -85,13 +85,13 @@ try {
 - [cardinal](https://github.com/thlorenz/cardinal): Syntax highlights JavaScript code with ANSI colors to be printed to
   the terminal
 
-# Changelog
+## Changelog
 
-## 0.3
+### 0.3
 
 - passing more information into {Function} config
 - API change: returning {Object} with code, ast and tokens attached instead of just a code {String}
 
-## 0.2 
+### 0.2 
 
 - upgrade to Esprima 1.0.0
