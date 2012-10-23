@@ -144,7 +144,7 @@ function redeyed (code, config, opts) {
   // remove shebang
   code = code.replace(/^\#\!.*/, '');
 
-  var ast = esprima.parse(code, { tokens: true, comments: true, range: true, tolerant: true })
+  var ast = esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
     , tokens = ast.tokens
     , comments = ast.comments
     , lastSplitEnd = 0

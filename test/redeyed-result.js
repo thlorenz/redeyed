@@ -14,16 +14,16 @@ test('redeyed result has esprima ast, tokens, comments and splits and transforme
   var code = '// a comment\nvar a = 3;'
     , conf = { Keyword: { _default: '_:-' } }
 
-    , ast    =  esprima.parse(code, { tokens: true, comments: true, range: true, tolerant: true })
+    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
     , tokens =  ast.tokens
     , comments = ast.comments
 
     , result = redeyed(code, conf)
 
+    console.log(ast)
   t.deepEquals(result.ast, ast, 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
-  // TODO: not returning comments as promised
-  // t.deepEquals(result.comments, comments, 'comments')
+  t.deepEquals(result.comments, comments, 'comments')
   t.notEquals(result.code, undefined, 'code')
 
   t.end()
@@ -33,7 +33,7 @@ test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits b
   var code = '// a comment\nvar a = 3;'
     , conf = { Keyword: { _default: '_:-' } }
 
-    , ast    =  esprima.parse(code, { tokens: true, comments: true, range: true, tolerant: true })
+    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
     , tokens =  ast.tokens
     , comments = ast.comments
 
@@ -41,8 +41,7 @@ test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits b
 
   t.deepEquals(result.ast, ast, 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
-  // TODO: not returning comments as promised
-  // t.deepEquals(result.comments, comments, 'comments')
+  t.deepEquals(result.comments, comments, 'comments')
   t.equals(result.code, undefined, 'code')
 
   t.end()
