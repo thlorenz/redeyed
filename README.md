@@ -30,7 +30,15 @@ One usecase is adding metadata to your code that can then be used to apply synta
 
 ### {Function} config
 
-`function (s) { return 'replacement for s'; }`: replaces the token with whatever is returned by the provided function
+`function (tokenString, tokenIndex, tokens) { return 'replacement for tokenString'; }`: replaces the tokenString with whatever is returned by the provided function
+
+- tokenString: the content of the token that is currently being processed
+- tokenIndex: the index of the token being processed in tokens
+- tokens: all tokens that are being processed **including comments** (i.e. result of merging esprima tokens and
+  comments)
+
+In most cases the `tokenString` is all you'll need. The extra parameters are passed in case you need to gather more
+information about the `token`'s surroundings in order to decide how to transform it.
 
 ### Missing before and after resolution
 
@@ -64,7 +72,7 @@ var redeyed = require('redeyed')
 // redeyed will throw an error (caused by the esprima parser) if the code has invalid javascript
 try {
   result = redeyed(code, config);
-  console.log(result);
+  console.log(result.code);
 } catch(err) {
   console.error(err);
 }
@@ -80,6 +88,26 @@ try {
 }
 ```
 
+***result***:
+*returned by*: ***redeyed(code, config[, opts])***
+
+```js
+{ 
+    ast      
+  , tokens   
+  , comments 
+  , splits   
+  , code     
+}
+
+- ast `{Array}`: [abstract syntax tree](http://en.wikipedia.org/wiki/Abstract_syntax_tree) as returned by [esprima
+  parse](http://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- tokens `{Array}`: [tokens](http://en.wikipedia.org/wiki/Token_(parser)#Token) provided by esprima (excluding
+  comments)
+- comments `{Array}`: block and line comments as provided by esprima
+- splits `{Array}`: code pieces split up, some of which where transformed as configured
+- code `{String}`: transformed code sames as `splits.join('')`
+
 ## redeyed in the wild
 
 - [cardinal](https://github.com/thlorenz/cardinal): Syntax highlights JavaScript code with ANSI colors to be printed to
@@ -88,10 +116,12 @@ try {
 ## Changelog
 
 ### 0.3
-
 - passing more information into {Function} config
-- API change: returning {Object} with code, ast and tokens attached instead of just a code {String}
+- API change: returning {Object} with code, ast, comments and tokens attached instead of just a code {String}
+- comments support
 
 ### 0.2 
-
 - upgrade to Esprima 1.0.0
+
+### 0.1
+- first working version
