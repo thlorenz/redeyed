@@ -87,9 +87,9 @@ try {
 ***opts***:
 ```js
 { // {Boolean}
-  // if true returns the {Array} of pieces into which the transformed code is split up 
-  // if false returns the splits join('')ed into a {String}
-  splits: true|false
+  // if true `result.code` is not assigned and therefore `undefined`
+  // if false (default) `result.code` property contains the result of `split.join`
+  nojoin: true|false
 }
 ```
 
@@ -110,7 +110,7 @@ try {
   comments)
 - comments `{Array}`: block and line comments as provided by esprima
 - splits `{Array}`: code pieces split up, some of which where transformed as configured
-- code `{String}`: transformed code, same as `splits.join('')`
+- code `{String}`: transformed code, same as `splits.join('')` unless this step has been skipped (see opts)
 
 ## redeyed in the wild
 
