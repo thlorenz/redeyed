@@ -138,6 +138,19 @@ function normalize (root) {
   functionize(root);
 }
 
+function mergeTokensAndComments(tokens, comments) {
+  var all = {};
+
+  function addToAllByRangeStart(t) { all[ t.range[0] ] = t; }
+
+  tokens.forEach(addToAllByRangeStart);
+  comments.forEach(addToAllByRangeStart);
+
+  // keys are sorted automatically
+  return Object.keys(all)
+    .map(function (k) { return all[k]; });
+}
+
 function redeyed (code, config, opts) {
   opts = opts || {};
 
@@ -149,7 +162,9 @@ function redeyed (code, config, opts) {
     , comments = ast.comments
     , lastSplitEnd = 0
     , splits = []
-    , transformedCode;
+    , transformedCode
+    , all
+    ;
 
   // console.log(inspect(tokens));
 
@@ -165,8 +180,9 @@ function redeyed (code, config, opts) {
     lastSplitEnd = end;
   }
 
-  for (var tokenIdx = 0; tokenIdx < tokens.length; tokenIdx++) {
-    var token = tokens[tokenIdx]
+  all = mergeTokensAndComments(tokens, comments);
+  for (var tokenIdx = 0; tokenIdx < all.length; tokenIdx++) {
+    var token = all[tokenIdx]
       , surroundForType = config[token.type]
       , surround
       , start
@@ -188,7 +204,7 @@ function redeyed (code, config, opts) {
       end = token.range[1];
 
       addSplit(lastSplitEnd, start);
-      addSplit(start, end, surround, tokenIdx, tokens);
+      addSplit(start, end, surround, tokenIdx, all);
     }
   }
 
