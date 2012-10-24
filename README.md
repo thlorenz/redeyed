@@ -22,23 +22,15 @@ One usecase is adding metadata to your code that can then be used to apply synta
 
 ### {String} config
 
-`'before:after'`: wraps the token inside before/after 
+`'before:after'`
+
+wraps the token inside before/after 
 
 ### {Object} config
 
-`{ _before: 'before', _after: 'after' }`: wraps token inside before/after
+`{ _before: 'before', _after: 'after' }`
 
-### {Function} config
-
-`function (tokenString, tokenIndex, tokens) { return 'replacement for tokenString'; }`: replaces the tokenString with whatever is returned by the provided function
-
-- tokenString: the content of the token that is currently being processed
-- tokenIndex: the index of the token being processed in tokens
-- tokens: all tokens that are being processed **including comments** (i.e. result of merging esprima tokens and
-  comments)
-
-In most cases the `tokenString` is all you'll need. The extra parameters are passed in case you need to gather more
-information about the `token`'s surroundings in order to decide how to transform it.
+wraps token inside before/after
 
 ### Missing before and after resolution
 
@@ -56,6 +48,20 @@ In these cases the missing half is resolved as follows:
 - from the `parent._default` (i.e., `Keyword._default`) if found
 - otherwise from the `config._default` if found
 - otherwise `''` (empty string)
+
+### {Function} config
+
+`function (tokenString, tokenIndex, tokens) { return 'replacement for tokenString'; }`
+
+replaces the tokenString with whatever is returned by the provided function
+
+- tokenString: the content of the token that is currently being processed
+- tokenIndex: the index of the token being processed inside tokens
+- tokens: all tokens that are being processed **including comments** (i.e. the result of merging esprima tokens and
+  comments)
+
+In most cases the `tokenString` is all you need. The extra parameters are passed in case you need to gather more
+information about the `token`'s surroundings in order to decide how to transform it.
 
 ### Transforming JavaScript code
 
@@ -80,25 +86,23 @@ try {
 
 ***opts***:
 ```js
-{ 
-  // {Boolean}
+{ // {Boolean}
   // if true returns the {Array} of pieces into which the transformed code is split up 
   // if false returns the splits join('')ed into a {String}
   splits: true|false
 }
 ```
 
-***result***:
-*returned by*: ***redeyed(code, config[, opts])***
+***return value***:
 
 ```js
-{ 
-    ast      
+{   ast      
   , tokens   
   , comments 
   , splits   
   , code     
 }
+```
 
 - ast `{Array}`: [abstract syntax tree](http://en.wikipedia.org/wiki/Abstract_syntax_tree) as returned by [esprima
   parse](http://en.wikipedia.org/wiki/Abstract_syntax_tree)
