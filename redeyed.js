@@ -171,13 +171,25 @@ function redeyed (code, config, opts) {
   normalize(config);
 
   function addSplit (start, end, surround, tokenIdx, tokens) {
+    var result
+      , skip = 0;
+
     if (start >= end) return;
-    if (surround)
-      splits.push(surround(code.slice(start, end), tokenIdx, tokens));
-    else
+    if (surround) {
+      // TODO: extra function to have no nested if
+      result = surround(code.slice(start, end), tokenIdx, tokens);
+      if (isObject(result)) {
+        splits.push(result.replacement);
+        skip = result.skip;
+      } else 
+        splits.push(result);
+
+    } else
       splits.push(code.slice(start, end));
 
-    lastSplitEnd = end;
+    // TODO: protect against running out of tokens
+    lastSplitEnd = skip > 0 ? tokens[tokenIdx + skip].range[1] : end;
+    return skip;
   }
 
   all = mergeTokensAndComments(tokens, comments);
@@ -204,7 +216,7 @@ function redeyed (code, config, opts) {
       end = token.range[1];
 
       addSplit(lastSplitEnd, start);
-      addSplit(start, end, surround, tokenIdx, all);
+      tokenIdx += addSplit(start, end, surround, tokenIdx, all);
     }
   }
 
