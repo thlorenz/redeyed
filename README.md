@@ -10,6 +10,11 @@
 
 Takes JavaScript code, along with a config and returns the original code with tokens wrapped and/or replaced as configured.
 
+# Where?
+
+- server side using nodejs
+- in the [browser](#browser-support)
+
 ## What for?
 
 One usecase is adding metadata to your code that can then be used to apply syntax highlighting.
@@ -112,12 +117,40 @@ try {
 - splits `{Array}`: code pieces split up, some of which where transformed as configured
 - code `{String}`: transformed code, same as `splits.join('')` unless this step has been skipped (see opts)
 
+## Browser Support
+
+### AMD
+
+Ensure to include [esprima](https://github.com/ariya/esprima) as one of your dependencies
+
+```js
+define(['redeyed'], function (redeyed) {
+ [ .. ]
+});
+```
+
+### Attached to global window object
+
+The `redeyed {Function}` will be exposed globally as `window.redeyed` - big surprise!
+
+```html
+<script type="text/javascript" src="https://raw.github.com/ariya/esprima/master/esprima.js"></script>
+<script type="text/javascript" src="path/to/redeyed.js"></script>
+```
+
 ## redeyed in the wild
 
 - [cardinal](https://github.com/thlorenz/cardinal): Syntax highlights JavaScript code with ANSI colors to be printed to
   the terminal
 
+## Examples
+
+- `npm explore redeyed; npm demo` will let you try the [browser example](https://github.com/thlorenz/redeyed/tree/master/examples/browser)
+
 ## Changelog
+
+### 0.4
+- browser support
 
 ### 0.3
 - passing more information into {Function} config
