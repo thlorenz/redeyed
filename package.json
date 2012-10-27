@@ -5,7 +5,8 @@
   "author": "Thorsten Lorenz <thlorenz@gmx.de> (thlorenz.com)",
   "main": "redeyed.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tap test/*.js",
+    "demo": "cd examples/browser; open index.html"
   },
   "repository": {
     "type": "git",
