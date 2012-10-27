@@ -7,25 +7,23 @@ var esprima
   , toString = Object.prototype.toString
   ;
 
-// client side
-// amd
 if (typeof define === 'function' && define.amd) {
-  return define(['esprima'], function (esprima) {
+  // client side
+  // amd
+  define(['esprima'], function (esprima) {
       return bootstrap(esprima);
-    });
-}
+  });
 
-// no amd -> attach to window if it exists
-// Note that this requires 'esprima' to be defined on the window, so that script has to be loaded first
-if (typeof window === 'object') {
-  return window.redeyed = bootstrap(window.esprima);
-}
+} else if (typeof window === 'object') {
+  // no amd -> attach to window if it exists
+  // Note that this requires 'esprima' to be defined on the window, so that script has to be loaded first
+  window.redeyed = bootstrap(window.esprima);
 
-// server side
-if (typeof module === 'object' && typeof module.exports === 'object' && typeof require === 'function') {
+} else if (typeof module === 'object' && typeof module.exports === 'object' && typeof require === 'function') {
+  // server side
   esprima = require('esprima');
   exportFn = function (redeyed) { module.exports = redeyed; };
-  return bootstrap(esprima, exportFn);
+  bootstrap(esprima, exportFn);
 }
 
 function bootstrap(esprima, exportFn) {
