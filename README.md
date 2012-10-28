@@ -142,23 +142,10 @@ The `redeyed {Function}` will be exposed globally as `window.redeyed` - big surp
 
 - [cardinal](https://github.com/thlorenz/cardinal): Syntax highlights JavaScript code with ANSI colors to be printed to
   the terminal
+- [peacock](http://thlorenz.github.com/peacock/): JavaScript syntax highlighter that generates html that is compatible
+  with pygments styles.
 
 ## Examples
 
 - `npm explore redeyed; npm demo` will let you try the [browser example](https://github.com/thlorenz/redeyed/tree/master/examples/browser)
 
-## Changelog
-
-### 0.4
-- browser support
-
-### 0.3
-- passing more information into {Function} config
-- API change: returning {Object} with code, ast, comments and tokens attached instead of just a code {String}
-- comments support
-
-### 0.2 
-- upgrade to Esprima 1.0.0
-
-### 0.1
-- first working version
