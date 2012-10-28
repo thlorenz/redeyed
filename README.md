@@ -4,7 +4,7 @@
 
 ![frog](http://allaboutfrogs.org/gallery/photos/redeyes/red1.gif)
 
-[Red Eyed Tree Frog](http://allaboutfrogs.org/info/species/redeye.html) (*Agalychnis callidryas*)
+[Red Eyed Tree Frog](http://allaboutfrogs.org/info/species/redeye.html) *(Agalychnis callidryas)*
 
 ## What?
 
