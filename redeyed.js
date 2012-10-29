@@ -1,3 +1,5 @@
+;(function () {
+
 'use strict';
 /*jshint laxbreak: true,  browser:true */
 /*global define*/
@@ -241,3 +243,4 @@ function bootstrap(esprima, exportFn) {
 
   return exportFn ? exportFn(redeyed) : redeyed;
 }
+})();
