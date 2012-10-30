@@ -1,11 +1,12 @@
 var path    =  require('path')
   , fs      =  require('fs')
   , redeyed =  require('..')
+  , vm = require('vm')
   ;
 
 var samplePath =  path.join(__dirname, 'sources', 'log.js')
   , origCode   =  fs.readFileSync(samplePath, 'utf-8')
-  , kinds = ['debug', 'info', 'warn', 'error' ]
+  , kinds = ['silly', 'info', 'warn', 'error' ]
   ;
 
 function replaceConsole(s, idx, tokens) {
@@ -20,14 +21,14 @@ function replaceConsole(s, idx, tokens) {
     , tknType
     ;
 
-  if (kind === 'log') kind = 'debug';
+  if (kind === 'log') kind = 'silly';
 
   // not a console.xxx(...) statement? -> just return original
   if (next !== '.' || !~kinds.indexOf(kind) || openParen !== '(') return s;
 
-  // resolve arguments to console.xxx up all args from ( to )
+  // resolve arguments to console.xxx all args from ( to )
   open = 1;
-  while(open) {
+  while (open) {
     tkn = tokens[++argIdx];
     tknVal = tkn.value;
     tknType = tkn.type;
@@ -49,11 +50,17 @@ function replaceConsole(s, idx, tokens) {
   return { replacement: replacement, skip: result.length - 3 }; 
 }
 
-var config = {
-  Identifier: { console: replaceConsole }
-};
-      
-var code = redeyed(origCode, config).code;
+function transformAndRun () {
+  var config = {
+    Identifier: { console: replaceConsole }
+  }
+  , code = redeyed(origCode, config).code
+  , initSandbox = { require: require }
+  , context = vm.createContext(initSandbox);
 
-console.log(code);
+  vm.runInContext(code, context, 'transformed-log.vm');
+}
+
+transformAndRun();
+
 
