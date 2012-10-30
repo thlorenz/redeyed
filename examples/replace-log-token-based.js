@@ -9,8 +9,10 @@ var samplePath =  path.join(__dirname, 'sources', 'log.js')
   , kinds = ['silly', 'info', 'warn', 'error' ]
   ;
 
-function replaceConsole(s, idx, tokens) {
-  var next      =  tokens[idx + 1].value
+function replaceConsole(s, info) {
+  var idx       =  info.tokenIndex
+    , tokens    =  info.tokens
+    , next      =  tokens[idx + 1].value
     , kind      =  tokens[idx + 2].value
     , openParen =  tokens[idx + 3].value
     , open

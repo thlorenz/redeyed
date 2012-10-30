@@ -170,14 +170,14 @@ function redeyed (code, config, opts) {
 
   normalize(config);
 
-  function addSplit (start, end, surround, tokenIdx, tokens) {
+  function addSplit (start, end, surround, info) {
     var result
       , skip = 0;
 
     if (start >= end) return;
     if (surround) {
       // TODO: extra function to have no nested if
-      result = surround(code.slice(start, end), tokenIdx, tokens);
+      result = surround(code.slice(start, end), info);
       if (isObject(result)) {
         splits.push(result.replacement);
         skip = result.skip;
@@ -216,7 +216,7 @@ function redeyed (code, config, opts) {
       end = token.range[1];
 
       addSplit(lastSplitEnd, start);
-      tokenIdx += addSplit(start, end, surround, tokenIdx, all);
+      tokenIdx += addSplit(start, end, surround, { tokenIndex: tokenIdx, tokens: all });
     }
   }
 
