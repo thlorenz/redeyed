@@ -1,4 +1,4 @@
-// will be needed when we replaced all console.xxx statements with log.xxx
+// First two lines will be needed when we replaced all console.xxx statements with log.xxx
 var log = require('npmlog');
 log.level = 'silly';
 

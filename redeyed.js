@@ -164,15 +164,30 @@ function redeyed (code, config, opts) {
     , splits = []
     , transformedCode
     , all
+    , info
     ;
 
   // console.log(inspect(tokens));
 
   normalize(config);
 
+  function tokenIndex(tokens, tkn, start) {
+    var current
+      , rangeStart = tkn.range[0];
+
+    for (current = start; current < tokens.length; current++) {
+      if (tokens[current].range[0] === rangeStart) return current;
+    }
+
+    throw new Error('Token %s not found at or after index: %d', tkn, start);
+  }
+
   function addSplit (start, end, surround, info) {
     var result
-      , skip = 0;
+      , currentIndex
+      , nextIndex
+      , skip = 0
+      ;
 
     if (start >= end) return;
     if (surround) {
@@ -180,7 +195,11 @@ function redeyed (code, config, opts) {
       result = surround(code.slice(start, end), info);
       if (isObject(result)) {
         splits.push(result.replacement);
-        skip = result.skip;
+
+        currentIndex =  info.tokenIndex;
+        nextIndex    =  tokenIndex(info.tokens, result.skipPastToken, currentIndex);
+        skip         =  nextIndex - currentIndex;
+
       } else 
         splits.push(result);
 
@@ -188,7 +207,7 @@ function redeyed (code, config, opts) {
       splits.push(code.slice(start, end));
 
     // TODO: protect against running out of tokens
-    lastSplitEnd = skip > 0 ? tokens[tokenIdx + skip].range[1] : end;
+    lastSplitEnd = skip > 0 ? tokens[nextIndex - 1].range[1] : end;
     return skip;
   }
 
@@ -216,7 +235,8 @@ function redeyed (code, config, opts) {
       end = token.range[1];
 
       addSplit(lastSplitEnd, start);
-      tokenIdx += addSplit(start, end, surround, { tokenIndex: tokenIdx, tokens: all });
+      info = { tokenIndex: tokenIdx, tokens: all, ast: ast, code: code };
+      tokenIdx += addSplit(start, end, surround, info);
     }
   }
 
