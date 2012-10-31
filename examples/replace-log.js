@@ -31,7 +31,6 @@ function replaceConsole(s, info) {
   open = 1;
   while (open) {
     tkn = tokens[++argIdx];
-    tknVal = tkn.value;
 
     // count open parens vs. closed ones to handle things like console.log(new Error('..'));
     if (tkn.value === '(') open++;
