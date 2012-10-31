@@ -28,10 +28,9 @@ test('function - config passing idx and tokens', function (t) {
       }
     , code = 'var fn = function () { return true; }'
 
-  function identity (s, idx, tokens) { 
-    console.log([s, idx])
-    args.push( { value: s, idx: idx, tokens: tokens }) 
-    // returning unchanged string will the splits be equal to the original tokens
+  function identity (s, info) { 
+    args.push( { value: s, idx: info.tokenIndex, tokens: info.tokens, code: info.code }) 
+    // returning unchanged string will keep the splits be equal to the original tokens
     return s 
   } 
 
@@ -50,6 +49,7 @@ test('function - config passing idx and tokens', function (t) {
 
         t.equals(arg.value, token.value, 'passes correct value: ' + inspect([ arg.value, token.value ]))
         t.equals(arg.idx, i, 'passes correct index')
+        t.equals(arg.code, code, 'passes code')
         t.deepEquals(arg.tokens, tokens, 'passes all tokens')
       }
     t.end()

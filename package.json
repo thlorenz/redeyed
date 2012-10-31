@@ -23,7 +23,8 @@
   "license": "MIT",
   "devDependencies": {
     "tap": "~0.3.1",
-    "readdirp": "~0.2.1"
+    "readdirp": "~0.2.1",
+    "cardinal": "~0.2.0"
   },
   "dependencies": {
     "esprima": "~1.0.0"
