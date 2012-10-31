@@ -54,7 +54,7 @@ function transformAndRun () {
 
   console.log('Original code:\n', origCode);
   console.log('\nlog calls replaced:\n', code);
-  console.log('\nLets run it shall we?');
+  console.log('\nLets run it:');
   vm.runInContext(code, context, 'transformed-log.vm');
 }
 

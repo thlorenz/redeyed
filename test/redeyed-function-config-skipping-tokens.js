@@ -73,14 +73,12 @@ test('replace log', function (t) {
 
    , origCode = [
        'console.info("info ", 1);'
-     , 'console.log("log ", 2);'
      , 'console.warn("warn ", 3);'
      , 'console.error("error ", new Error("oh my!"));'
     ].join('\n')
   
   , expectedCode = [
       'log.info("main-logger", "info ", 1));'
-    , 'log.log("main-logger", "log ", 2));'
     , 'log.warn("main-logger", "warn ", 3));'
     , 'log.error("main-logger", "error ", new Error("oh my!")));'
     ].join('\n')
