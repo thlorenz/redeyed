@@ -32,7 +32,7 @@ wraps the token inside before/after
 
 wraps token inside before/after
 
-### Missing before and after resolution
+#### Missing before and after resolution for {String} and {Object} config
 
 For the `{String}` and `{Object}` configurations, 'before' or 'after' may be omitted:
 
@@ -51,17 +51,57 @@ In these cases the missing half is resolved as follows:
 
 ### {Function} config
 
-`function (tokenString, tokenIndex, tokens) { return 'replacement for tokenString'; }`
+`function (tokenString, info) { return {String}|{Object}; }`
 
-replaces the tokenString with whatever is returned by the provided function
+#### Inputs
 
 - tokenString: the content of the token that is currently being processed
-- tokenIndex: the index of the token being processed inside tokens
-- tokens: all tokens that are being processed **including comments** (i.e. the result of merging esprima tokens and
-  comments)
+- info: an object with the following structure
 
-In most cases the `tokenString` is all you need. The extra parameters are passed in case you need to gather more
-information about the `token`'s surroundings in order to decide how to transform it.
+```js
+{
+    // {Int}
+    // the index of the token being processed inside tokens
+    tokenIndex
+
+    // {Array}
+    // all tokens that are being processed including comments 
+    // (i.e. the result of merging esprima tokens and comments)
+  , tokens  
+
+    // {Object} 
+    // the abstract syntax tree of the parsed code
+  , ast  
+
+    // {String}
+    // the code that was parsed (same string as the one passed to redeyed(code ..)
+  , code
+}
+```
+
+In most cases the `tokenString` is all you need. The extra info object is passed in case you need to gather more
+information about the `token`'s surroundings in order to decide how to transform it. 
+See: [replace-log-example](https://github.com/thlorenz/redeyed/blob/lookahead/examples/replace-log.js)
+
+#### Output
+
+You can return a {String} or an {Object} from a {Function} config.
+
+- when returning a {String}, the token value will be replaced with it
+- when returning an {Object}, it should be of the following form:
+
+```js
+{
+    // {String}
+    // the string that should be substituted for the value of the current and all skipped tokens
+    replacement
+
+    // {Object} (Token)
+    // the token after which processing should continue
+    // all tokens in between the current one and this one inclusive will be ignored
+  , skipPastToken
+}
+```
 
 ### Transforming JavaScript code
 
