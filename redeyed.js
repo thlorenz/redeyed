@@ -187,8 +187,6 @@ function bootstrap(esprima, exportFn) {
       , info
       ;
 
-    // console.log(inspect(tokens));
-
     normalize(config);
 
     function tokenIndex(tokens, tkn, start) {
@@ -202,32 +200,46 @@ function bootstrap(esprima, exportFn) {
       throw new Error('Token %s not found at or after index: %d', tkn, start);
     }
 
-    function addSplit (start, end, surround, info) {
+    function process(surround) {
       var result
         , currentIndex
+        , nextIndex
+        , skip = 0
+        , splitEnd
+        ;
+
+      result = surround(code.slice(start, end), info);
+      if (isObject(result)) {
+        splits.push(result.replacement);
+
+        currentIndex =  info.tokenIndex;
+        nextIndex    =  tokenIndex(info.tokens, result.skipPastToken, currentIndex);
+        skip         =  nextIndex - currentIndex;
+        splitEnd     =  skip > 0 ? tokens[nextIndex - 1].range[1] : end;
+      } else {
+        splits.push(result);
+        splitEnd = end;
+      }
+
+      return { skip: skip, splitEnd: splitEnd  };
+    }
+
+    function addSplit (start, end, surround, info) {
+      var result
         , nextIndex
         , skip = 0
         ;
 
       if (start >= end) return;
       if (surround) {
-        // TODO: extra function to have no nested if
-        result = surround(code.slice(start, end), info);
-        if (isObject(result)) {
-          splits.push(result.replacement);
-
-          currentIndex =  info.tokenIndex;
-          nextIndex    =  tokenIndex(info.tokens, result.skipPastToken, currentIndex);
-          skip         =  nextIndex - currentIndex;
-
-        } else 
-          splits.push(result);
-
-      } else
+        result       =  process(surround);
+        skip         =  result.skip;
+        lastSplitEnd =  result.splitEnd;
+      } else {
         splits.push(code.slice(start, end));
+        lastSplitEnd = end;
+      }
 
-      // TODO: protect against running out of tokens
-      lastSplitEnd = skip > 0 ? tokens[nextIndex - 1].range[1] : end;
       return skip;
     }
 
