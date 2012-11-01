@@ -6,6 +6,7 @@
   "main": "redeyed.js",
   "scripts": {
     "test": "tap test/*.js",
+    "demo-log": "node examples/replace-log",
     "demo": "cd examples/browser; open index.html"
   },
   "repository": {
