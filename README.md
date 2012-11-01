@@ -188,4 +188,5 @@ The `redeyed {Function}` will be exposed globally as `window.redeyed` - big surp
 ## Examples
 
 - `npm explore redeyed; npm demo` will let you try the [browser example](https://github.com/thlorenz/redeyed/tree/master/examples/browser)
+- `npm explore redeyed; npm demo-log` will let you try the [replace log example](https://github.com/thlorenz/redeyed/blob/master/examples/replace-log.js)
 
