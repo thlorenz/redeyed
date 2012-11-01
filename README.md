@@ -86,7 +86,7 @@ In these cases the missing half is resolved as follows:
 
 In most cases the `tokenString` is all you need. The extra info object is passed in case you need to gather more
 information about the `token`'s surroundings in order to decide how to transform it. 
-See: [replace-log-example](https://github.com/thlorenz/redeyed/blob/lookahead/examples/replace-log.js)
+See: [replace-log-example](https://github.com/thlorenz/redeyed/blob/master/examples/replace-log.js)
 
 #### Output
 
@@ -151,7 +151,7 @@ try {
 
 - ast `{Array}`: [abstract syntax tree](http://en.wikipedia.org/wiki/Abstract_syntax_tree) as returned by [esprima
   parse](http://en.wikipedia.org/wiki/Abstract_syntax_tree)
-- tokens `{Array}`: [tokens](http://en.wikipedia.org/wiki/Token_(parser)#Token) provided by esprima (excluding
+- tokens `{Array}`: [tokens](http://en.wikipedia.org/wiki/Token_(parser)) provided by esprima (excluding
   comments)
 - comments `{Array}`: block and line comments as provided by esprima
 - splits `{Array}`: code pieces split up, some of which where transformed as configured
