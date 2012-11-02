@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "tap": "~0.3.1",
+    "tap": "git://github.com/thlorenz/node-tap.git",
     "readdirp": "~0.2.1",
     "cardinal": "~0.2.0"
   },
