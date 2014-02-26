@@ -146,7 +146,8 @@ function bootstrap(esprima, exportFn) {
           var before = value._before || '';
           var after = value._after || '';
 
-          return node[key] = surroundWith (before, after);
+          node[key] = surroundWith (before, after);
+          return node[key];
         }
       });
   }
