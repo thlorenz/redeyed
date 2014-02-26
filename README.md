@@ -1,4 +1,4 @@
-# redeyed [![Build Status](https://secure.travis-ci.org/thlorenz/redeyed.png)](http://travis-ci.org/thlorenz/redeyed)
+# redeyed [![build status](https://secure.travis-ci.org/thlorenz/redeyed.png?branch=master)](http://travis-ci.org/thlorenz/redeyed)
 
 *Add color to your JavaScript!*
 
