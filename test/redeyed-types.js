@@ -54,10 +54,14 @@ test('types', function (t) {
   })
 
   t.test('\n# Punctuator', function (t) {
-    t.assertSurrounds('return 2 * 2;', { 'Punctuator': { _default: '$:%' } }, 'return 2 $*% 2$;%')
+    var punctuator = { 'Punctuator': { _default: '$:%' } };
+    t.assertSurrounds('return 2 * 2;', punctuator, 'return 2 $*% 2$;%')
     t.assertSurrounds(  'return 2 * 2;'
                       , { 'Punctuator': {'*': '#:', _default: '$:%' } }
                       , 'return 2 #*% 2$;%')
+    t.assertSurrounds('var {op, lhs, rhs} = getASTNode()', punctuator, 'var ${%op$,% lhs$,% rhs$}% $=% getASTNode$(%$)%')
+    t.assertSurrounds('function f(x, y=12) { return x + y;}', punctuator, 'function f$(%x$,% y$=%12$)% ${% return x $+% y$;%$}%')
+    t.assertSurrounds('function f(x, ...y) { return x * y.length;}', punctuator, 'function f$(%x$,% $...%y$)% ${% return x $*% y$.%length$;%$}%')
     t.end()
   })
 

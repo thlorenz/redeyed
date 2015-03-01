@@ -33,8 +33,6 @@ module.exports = {
 
     , 'case'        :  undefined
     , 'catch'       :  undefined
-    , 'class'       :  undefined
-    , 'const'       :  undefined
     , 'continue'    :  undefined
 
     , 'debugger'    :  undefined
@@ -43,22 +41,17 @@ module.exports = {
     , 'do'          :  undefined
 
     , 'else'        :  undefined
-    , 'export'      :  undefined
-    , 'extends'     :  undefined
 
     , 'finally'     :  undefined
     , 'for'         :  undefined
     , 'function'    :  undefined
 
     , 'if'          :  undefined
-    , 'import'      :  undefined
     , 'in'          :  undefined
     , 'instanceof'  :  undefined
-    , 'let'         :  undefined
+
     , 'new'         :  undefined
     , 'return'      :  undefined
-    , 'static'      :  undefined
-    , 'super'       :  undefined
     , 'switch'      :  undefined
 
     , 'this'        :  undefined
@@ -71,7 +64,6 @@ module.exports = {
 
     , 'while'       :  undefined
     , 'with'        :  undefined
-    , 'yield'       :  undefined
     , _default      :  undefined
   }
   , 'Punctuator': {
@@ -119,14 +111,12 @@ module.exports = {
     , '|=': undefined
     , '^=': undefined
     , '/=': undefined
-    , '=>': undefined
-    
+
     , '===': undefined
     , '!==': undefined
     , '>>>': undefined
     , '<<=': undefined
     , '>>=': undefined
-    , '...': undefined
     
     , '>>>=': undefined
 

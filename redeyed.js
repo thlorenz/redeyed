@@ -11,7 +11,7 @@ var esprima
 
 if (typeof module === 'object' && typeof module.exports === 'object' && typeof require === 'function') {
   // server side
-  esprima = require('esprima');
+  esprima = require('esprima-fb');
   exportFn = function (redeyed) { module.exports = redeyed; };
   bootstrap(esprima, exportFn);
 } else if (typeof define === 'function' && define.amd) {
@@ -172,11 +172,12 @@ function bootstrap(esprima, exportFn) {
 
   function redeyed (code, config, opts) {
     opts = opts || {};
+    var parser = config.parser || esprima;
 
     // remove shebang
     code = code.replace(/^\#\!.*/, '');
 
-    var ast = esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
+    var ast = parser.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
       , tokens = ast.tokens
       , comments = ast.comments
       , lastSplitEnd = 0
