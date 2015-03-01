@@ -28,6 +28,6 @@
     "cardinal": "~0.4.4"
   },
   "dependencies": {
-    "esprima": "~1.0.4"
+    "esprima-fb": "~12001.1.0-dev-harmony-fb"
   }
 }

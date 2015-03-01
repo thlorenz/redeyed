@@ -1,4 +1,4 @@
-/* 
+/*
  * Copy this file and use it as a starting point for your redeyed config.
  * Just fill in the tokens you want to surround/replace.
  * Keep in mind that more specific configurations override less specific ones.
@@ -33,8 +33,6 @@ module.exports = {
 
     , 'case'        :  undefined
     , 'catch'       :  undefined
-    , 'class'       :  undefined
-    , 'const'       :  undefined
     , 'continue'    :  undefined
 
     , 'debugger'    :  undefined
@@ -43,22 +41,17 @@ module.exports = {
     , 'do'          :  undefined
 
     , 'else'        :  undefined
-    , 'export'      :  undefined
-    , 'extends'     :  undefined
 
     , 'finally'     :  undefined
     , 'for'         :  undefined
     , 'function'    :  undefined
 
     , 'if'          :  undefined
-    , 'import'      :  undefined
     , 'in'          :  undefined
     , 'instanceof'  :  undefined
-    , 'let'         :  undefined
+
     , 'new'         :  undefined
     , 'return'      :  undefined
-    , 'static'      :  undefined
-    , 'super'       :  undefined
     , 'switch'      :  undefined
 
     , 'this'        :  undefined
@@ -71,18 +64,17 @@ module.exports = {
 
     , 'while'       :  undefined
     , 'with'        :  undefined
-    , 'yield'       :  undefined
     , _default      :  undefined
   }
   , 'Punctuator': {
-      ';': undefined  
-    , '.': undefined  
-    , ',': undefined  
+      ';': undefined
+    , '.': undefined
+    , ',': undefined
 
-    , '{': undefined  
-    , '}': undefined  
-    , '(': undefined  
-    , ')': undefined  
+    , '{': undefined
+    , '}': undefined
+    , '(': undefined
+    , ')': undefined
     , '[': undefined
     , ']': undefined
 
@@ -119,15 +111,13 @@ module.exports = {
     , '|=': undefined
     , '^=': undefined
     , '/=': undefined
-    , '=>': undefined
 
     , '===': undefined
     , '!==': undefined
     , '>>>': undefined
     , '<<=': undefined
     , '>>=': undefined
-    , '...': undefined
-    
+
     , '>>>=': undefined
 
     , _default: undefined
