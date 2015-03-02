@@ -135,6 +135,9 @@ try {
   // if true `result.code` is not assigned and therefore `undefined`
   // if false (default) `result.code` property contains the result of `split.join`
   nojoin: true|false
+  // {Object}
+  // overrides default parser `esprima-fb` and needs to be compatible with it
+  parser: require('esprima') 
 }
 ```
 

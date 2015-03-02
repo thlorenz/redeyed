@@ -17,7 +17,7 @@ if (typeof module === 'object' && typeof module.exports === 'object' && typeof r
 } else if (typeof define === 'function' && define.amd) {
   // client side
   // amd
-  define(['esprima'], function (esprima) {
+  define(['esprima-fb'], function (esprima) {
       return bootstrap(esprima);
   });
 } else if (typeof window === 'object') {
@@ -172,7 +172,7 @@ function bootstrap(esprima, exportFn) {
 
   function redeyed (code, config, opts) {
     opts = opts || {};
-    var parser = config.parser || esprima;
+    var parser = opts.parser || esprima;
 
     // remove shebang
     code = code.replace(/^\#\!.*/, '');

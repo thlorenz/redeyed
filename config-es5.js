@@ -1,4 +1,7 @@
 /*
+ * This config only contains ES5 tokens while the default config.js contains 
+ * ES6 tokens as well.
+ *
  * Copy this file and use it as a starting point for your redeyed config.
  * Just fill in the tokens you want to surround/replace.
  * Keep in mind that more specific configurations override less specific ones.
