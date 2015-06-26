@@ -9,7 +9,7 @@ var test     =  require('tap').test
   , redeyed  =  require('..')
   , node_modules =  path.join(__dirname, '..', 'node_modules')
   , tapdir       =  path.join(node_modules, 'tap')
-  , esprimadir   =  path.join(node_modules, 'esprima-fb')
+  , esprimadir   =  path.join(node_modules, 'esprima')
 
 test('tap', function (t) {
   var invalidTapFiles = [

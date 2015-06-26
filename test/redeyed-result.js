@@ -4,7 +4,7 @@
 var test = require('tap').test
   , util = require('util')
   , redeyed = require('..')
-  , esprima = require('esprima-fb')
+  , esprima = require('esprima')
 
 function inspect (obj) {
   return util.inspect(obj, false, 5, true)

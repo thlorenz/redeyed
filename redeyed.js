@@ -11,13 +11,13 @@ var esprima
 
 if (typeof module === 'object' && typeof module.exports === 'object' && typeof require === 'function') {
   // server side
-  esprima = require('esprima-fb');
+  esprima = require('esprima');
   exportFn = function (redeyed) { module.exports = redeyed; };
   bootstrap(esprima, exportFn);
 } else if (typeof define === 'function' && define.amd) {
   // client side
   // amd
-  define(['esprima-fb'], function (esprima) {
+  define(['esprima'], function (esprima) {
       return bootstrap(esprima);
   });
 } else if (typeof window === 'object') {
