@@ -15,6 +15,13 @@ test('tap', function (t) {
   var invalidTapFiles = [
       'async-map-ordered.js'
     , 'prof.js'
+    , 'localGit.js'
+    , 'precompiler.js'
+    , 'constant.js'
+    , 'identity.js'
+    , 'noop.js'
+    , 'index.js'
+    , 'runtime.js'
   ]
 
   readdirp({ root: tapdir, fileFilter: '*.js' })
