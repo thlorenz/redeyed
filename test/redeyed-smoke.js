@@ -15,6 +15,7 @@ test('tap', function (t) {
   var invalidTapFiles = [
       'async-map-ordered.js'
     , 'prof.js'
+    , 'whitespace.js'
   ]
 
   readdirp({ root: tapdir, fileFilter: '*.js' })
