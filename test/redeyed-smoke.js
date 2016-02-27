@@ -13,21 +13,33 @@ var test     =  require('tap').test
 
 test('tap', function (t) {
   var invalidTapFiles = [
-      'async-map-ordered.js'
-    , 'prof.js'
-    , 'localGit.js'
-    , 'precompiler.js'
-    , 'constant.js'
-    , 'identity.js'
-    , 'noop.js'
-    , 'index.js'
-    , 'runtime.js'
+      'services/localGit.js'
+    , 'lib/handlebars/runtime.js'
+    , 'handlebars/lib/precompiler.js'
+    , 'handlebars/compiler/javascript-compiler.js'
+    , 'slide/lib/async-map-ordered.js'
+    , 'resolve/test/precedence/'
+    , 'is-relative/index.js'
+    , 'is-buffer/test/'
+    , 'lodash/utility/'
   ]
+
+  function shouldProcess (path) {
+      var include = true
+
+      invalidTapFiles.every(function (entry) {
+          return include =  (path.indexOf(entry) < 0)
+      });
+
+      return include
+  }
 
   readdirp({ root: tapdir, fileFilter: '*.js' })
     .on('data', function (entry) {
-      
-      if (~invalidTapFiles.indexOf(entry.name)) return
+
+      if (!shouldProcess(entry.fullPath)) {
+          return
+      }
 
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
         , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
