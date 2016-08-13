@@ -11,13 +11,13 @@ var esprima
 
 if (typeof module === 'object' && typeof module.exports === 'object' && typeof require === 'function') {
   // server side
-  esprima = require('esprima');
+  esprima = require('espree');
   exportFn = function (redeyed) { module.exports = redeyed; };
   bootstrap(esprima, exportFn);
 } else if (typeof define === 'function' && define.amd) {
   // client side
   // amd
-  define(['esprima'], function (esprima) {
+  define(['espree'], function (esprima) {
       return bootstrap(esprima);
   });
 } else if (typeof window === 'object') {
@@ -170,6 +170,18 @@ function bootstrap(esprima, exportFn) {
       .map(function (k) { return all[k]; });
   }
 
+  function deduceSourceType(code, parser) {
+    var type = 'module';
+
+    try {
+      parser.parse(code, { sourceType: 'script' });
+      type = 'script';
+    } catch (e) {
+    }
+
+    return type;
+  }
+
   function redeyed (code, config, opts) {
     opts = opts || {};
     var parser = opts.parser || esprima;
@@ -177,7 +189,38 @@ function bootstrap(esprima, exportFn) {
     // remove shebang
     code = code.replace(/^\#\!.*/, '');
 
-    var ast = parser.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
+    var ast = parser.parse(code, {
+          // attach range information to each node
+          range: true,
+
+          // create a top-level comments array containing all comments
+          comment: true,
+
+          // create a top-level tokens array containing all tokens
+          tokens: true,
+
+          // specify the language version (3, 5, 6, or 7, default is 5)
+          ecmaVersion: 7,
+
+          // specify which type of script you're parsing (script or module, default is script)
+          sourceType: deduceSourceType(code, parser),
+
+          // specify additional language features
+          ecmaFeatures: {
+
+            // enable JSX parsing
+            jsx: true,
+
+            // enable return in global scope
+            globalReturn: true,
+
+            // enable implied strict mode (if ecmaVersion >= 5)
+            impliedStrict: true,
+
+            // allow experimental object rest/spread
+            experimentalObjectRestSpread: true
+          }
+    })
       , tokens = ast.tokens
       , comments = ast.comments
       , lastSplitEnd = 0

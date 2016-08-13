@@ -9,7 +9,17 @@ var test     =  require('tap').test
   , redeyed  =  require('..')
   , node_modules =  path.join(__dirname, '..', 'node_modules')
   , tapdir       =  path.join(node_modules, 'tap')
-  , esprimadir   =  path.join(node_modules, 'esprima')
+  , esprimadir   =  path.join(node_modules, 'espree')
+
+function shouldProcess (path, blacklist) {
+    var include = true
+
+    blacklist.every(function (entry) {
+        return include = (path.indexOf(entry) < 0)
+    });
+
+    return include
+}
 
 test('tap', function (t) {
   var invalidTapFiles = [
@@ -24,20 +34,10 @@ test('tap', function (t) {
     , 'lodash/utility/'
   ]
 
-  function shouldProcess (path) {
-      var include = true
-
-      invalidTapFiles.every(function (entry) {
-          return include =  (path.indexOf(entry) < 0)
-      });
-
-      return include
-  }
-
   readdirp({ root: tapdir, fileFilter: '*.js' })
     .on('data', function (entry) {
 
-      if (!shouldProcess(entry.fullPath)) {
+      if (!shouldProcess(entry.fullPath, invalidTapFiles)) {
           return
       }
 
@@ -53,6 +53,13 @@ test('esprima', function (t) {
 
   readdirp({ root: esprimadir, fileFilter: '*.js' })
     .on('data', function (entry) {
+      var invalidEspreeFiles = [
+          'lib/visitor-keys.js'
+      ]
+
+      if (!shouldProcess(entry.fullPath, invalidEspreeFiles)) {
+          return
+      }
       
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
         , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
