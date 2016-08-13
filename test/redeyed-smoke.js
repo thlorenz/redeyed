@@ -34,7 +34,7 @@ test('tap', function (t) {
     , 'lodash/utility/'
   ]
 
-  readdirp({ root: tapdir, fileFilter: '*.js' })
+  readdirp({ root: tapdir, fileFilter: '*.js', directoryFilter: '!node_modules' })
     .on('data', function (entry) {
 
       if (!shouldProcess(entry.fullPath, invalidTapFiles)) {
@@ -51,10 +51,10 @@ test('tap', function (t) {
 
 test('esprima', function (t) {
 
-  readdirp({ root: esprimadir, fileFilter: '*.js' })
+  readdirp({ root: esprimadir, fileFilter: '*.js', directoryFilter: '!node_modules' })
     .on('data', function (entry) {
       var invalidEspreeFiles = [
-          'lib/visitor-keys.js'
+          'espree/lib/visitor-keys.js'
       ]
 
       if (!shouldProcess(entry.fullPath, invalidEspreeFiles)) {
