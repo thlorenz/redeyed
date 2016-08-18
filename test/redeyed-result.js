@@ -18,7 +18,7 @@ test('redeyed result has esprima ast, tokens, comments and splits and transforme
     , tokens =  ast.tokens
     , comments = ast.comments
 
-    , result = redeyed(code, conf)
+    , result = redeyed(code, conf, { buildAst: true } )
 
     console.log(ast)
   t.deepEquals(result.ast, ast, 'ast')
@@ -37,7 +37,7 @@ test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits b
     , tokens =  ast.tokens
     , comments = ast.comments
 
-    , result = redeyed(code, conf, { nojoin: true })
+    , result = redeyed(code, conf, { nojoin: true, buildAst: true })
 
   t.deepEquals(result.ast, ast, 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')

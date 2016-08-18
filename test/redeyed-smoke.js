@@ -42,7 +42,7 @@ test('tap', function (t) {
       }
 
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
+        , result = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
 
       t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
     })
@@ -53,9 +53,9 @@ test('esprima', function (t) {
 
   readdirp({ root: esprimadir, fileFilter: '*.js' })
     .on('data', function (entry) {
-      
+
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
+        , result = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
 
       t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
     })
@@ -66,7 +66,7 @@ test('redeyed', function (t) {
 
   readdirp({ root: path.join(__dirname, '..'), fileFilter: '*.js', directoryFilter: ['!.git', '!node_modules' ] })
     .on('data', function (entry) {
-      
+
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
         , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
 
