@@ -42,9 +42,11 @@ test('tap', function (t) {
       }
 
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+        , resultAst = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+        , resultTokenize = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: false }).code
 
-      t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultAst.indexOf('+var-') || !(~resultAst.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultTokenize.indexOf('+var-') || !(~resultTokenize.indexOf('var ')), 'redeyed ' + entry.path)
     })
     .on('end', t.end.bind(t))
 })
@@ -55,9 +57,11 @@ test('esprima', function (t) {
     .on('data', function (entry) {
 
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+        , resultAst = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+        , resultTokenize = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: false }).code
 
-      t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultAst.indexOf('+var-') || !(~resultAst.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultTokenize.indexOf('+var-') || !(~resultTokenize.indexOf('var ')), 'redeyed ' + entry.path)
     })
     .on('end', t.end.bind(t))
 })
