@@ -42,9 +42,11 @@ test('tap', function (t) {
       }
 
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
+        , resultAst = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+        , resultTokenize = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: false }).code
 
-      t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultAst.indexOf('+var-') || !(~resultAst.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultTokenize.indexOf('+var-') || !(~resultTokenize.indexOf('var ')), 'redeyed ' + entry.path)
     })
     .on('end', t.end.bind(t))
 })
@@ -53,11 +55,13 @@ test('esprima', function (t) {
 
   readdirp({ root: esprimadir, fileFilter: '*.js' })
     .on('data', function (entry) {
-      
-      var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
 
-      t.assert(~result.indexOf('+var-') || !(~result.indexOf('var ')), 'redeyed ' + entry.path)
+      var code = fs.readFileSync(entry.fullPath, 'utf-8')
+        , resultAst = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+        , resultTokenize = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: false }).code
+
+      t.assert(~resultAst.indexOf('+var-') || !(~resultAst.indexOf('var ')), 'redeyed ' + entry.path)
+      t.assert(~resultTokenize.indexOf('+var-') || !(~resultTokenize.indexOf('var ')), 'redeyed ' + entry.path)
     })
     .on('end', t.end.bind(t))
 })
@@ -66,7 +70,7 @@ test('redeyed', function (t) {
 
   readdirp({ root: path.join(__dirname, '..'), fileFilter: '*.js', directoryFilter: ['!.git', '!node_modules' ] })
     .on('data', function (entry) {
-      
+
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
         , result = redeyed(code, { Keyword: { 'var': '+:-' } }).code
 
