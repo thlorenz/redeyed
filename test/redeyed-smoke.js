@@ -7,21 +7,14 @@ var test     =  require('tap').test
   , fs       =  require('fs')
   , readdirp =  require('readdirp')
   , redeyed  =  require('..')
+  , esprima  =  require('esprima')
   , node_modules =  path.join(__dirname, '..', 'node_modules')
   , tapdir       =  path.join(node_modules, 'tap')
   , esprimadir   =  path.join(node_modules, 'esprima')
 
 test('tap', function (t) {
   var invalidTapFiles = [
-      'services/localGit.js'
-    , 'lib/handlebars/runtime.js'
-    , 'handlebars/lib/precompiler.js'
-    , 'handlebars/compiler/javascript-compiler.js'
     , 'slide/lib/async-map-ordered.js'
-    , 'resolve/test/precedence/'
-    , 'is-relative/index.js'
-    , 'is-buffer/test/'
-    , 'lodash/utility/'
   ]
 
   function shouldProcess (path) {
@@ -34,15 +27,20 @@ test('tap', function (t) {
       return include
   }
 
+  function containsVarKeyword(code) {
+      code = code.replace(/^#!([^\r\n]+)/, function(match, captured) { return "//" + captured; });
+      return esprima.tokenize(code).some(function (t) {
+          return t.type === 'Keyword' && t.value === 'var'
+      })
+  }
+
   readdirp({ root: tapdir, fileFilter: '*.js' })
     .on('data', function (entry) {
-
-      if (!shouldProcess(entry.fullPath)) {
-          return
-      }
-
       var code = fs.readFileSync(entry.fullPath, 'utf-8')
-        , resultAst = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
+
+      if (!shouldProcess(entry.fullPath) || !containsVarKeyword(code)) return
+
+      var resultAst = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: true }).code
         , resultTokenize = redeyed(code, { Keyword: { 'var': '+:-' } }, { buildAst: false }).code
 
       t.assert(~resultAst.indexOf('+var-') || !(~resultAst.indexOf('var ')), 'redeyed ' + entry.path)
