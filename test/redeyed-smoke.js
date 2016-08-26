@@ -21,7 +21,7 @@ test('tap', function (t) {
     , 'resolve/test/precedence/'
     , 'is-relative/index.js'
     , 'is-buffer/test/'
-    , 'lodash/utility/'
+    , 'lodash/'
   ]
 
   function shouldProcess (path) {
