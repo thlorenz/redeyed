@@ -181,8 +181,8 @@ define(['redeyed'], function (redeyed) {
 The `redeyed {Function}` will be exposed globally as `window.redeyed` - big surprise!
 
 ```html
-<script type="text/javascript" src="https://raw.github.com/ariya/esprima/master/esprima.js"></script>
-<script type="text/javascript" src="path/to/redeyed.js"></script>
+<script type="text/javascript" src="https://unpkg.com/esprima"></script>
+<script type="text/javascript" src="https://unpkg.com/redeyed"></script>
 ```
 
 ## redeyed in the wild
