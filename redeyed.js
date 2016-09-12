@@ -175,10 +175,8 @@ function bootstrap(esprima, exportFn) {
     var parser = opts.parser || esprima;
     var buildAst = !!opts.buildAst;
 
-    // remove shebang
-    code = code.replace(/^\#\!.*/, '');
-
-    var ast
+    var hashbang =  ''
+      , ast
       , tokens
       , comments
       , lastSplitEnd = 0
@@ -187,6 +185,12 @@ function bootstrap(esprima, exportFn) {
       , all
       , info
       ;
+
+    // Replace hashbang line with empty whitespaces to preserve token locations
+    if (code[0] === '#' && code[1] === '!') {
+      hashbang = code.substr(0, code.indexOf('\n') + 1);
+      code = Array.apply(0, Array(hashbang.length)).join(' ') + '\n' + code.substr(hashbang.length);
+    }
 
     if (buildAst) {
       ast = parser.parse(code, { tokens: true, comment: true, range: true, tolerant: true });
@@ -299,9 +303,14 @@ function bootstrap(esprima, exportFn) {
       addSplit(lastSplitEnd, code.length);
     }
 
-  transformedCode = opts.nojoin ? undefined : splits.join('');
+  if (!opts.nojoin) {
+    transformedCode = splits.join('');
+    if (hashbang.length > 0) {
+      transformedCode = hashbang + transformedCode.substr(hashbang.length);
+    }
+  }
 
-    return { 
+    return {
         ast      :  ast
       , tokens   :  tokens
       , comments :  comments
