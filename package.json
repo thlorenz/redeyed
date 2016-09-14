@@ -28,6 +28,6 @@
     "cardinal": "~0.4.4"
   },
   "dependencies": {
-    "esprima": "~2.7.0"
+    "esprima": "~3.0.0"
   }
 }

@@ -129,6 +129,7 @@ module.exports = {
     , '^=': undefined
     , '/=': undefined
     , '=>': undefined
+    , '**': undefined
 
     , '===': undefined
     , '!==': undefined
@@ -136,8 +137,10 @@ module.exports = {
     , '<<=': undefined
     , '>>=': undefined
     , '...': undefined
+    , '**=': undefined
     
     , '>>>=': undefined
+
 
     , _default: undefined
   }

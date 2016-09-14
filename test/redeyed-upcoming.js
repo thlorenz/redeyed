@@ -30,6 +30,8 @@ test('upcoming syntax: rest and spread properties', function (t) {
     var punctuator = { 'Punctuator': { _default: '$:%' } };
     t.assertSurrounds('{a,...b} = c', punctuator, '${%a$,%$...%b$}% $=% c')
     t.assertSurrounds('x={y,...z}', punctuator, 'x$=%${%y$,%$...%z$}%')
+    t.assertSurrounds('x ** y', punctuator, 'x $**% y');
+    t.assertSurrounds('x **= y', punctuator, 'x $**=% y');
     t.end()
   })
 
