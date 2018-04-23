@@ -14,7 +14,7 @@ test('redeyed result does not have esprima ast by default', function (t) {
   var code = '// a comment\nvar a = 3;'
     , conf = { Keyword: { _default: '_:-' } }
 
-    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
+    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
     , tokens =  ast.tokens
     , comments = ast.comments
 
@@ -30,14 +30,12 @@ test('redeyed result does not have esprima ast by default', function (t) {
 test('redeyed result has esprima ast, tokens, comments and splits and transformed code', function (t) {
   var code = '// a comment\nvar a = 3;'
     , conf = { Keyword: { _default: '_:-' } }
-
-    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
+    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
     , tokens =  ast.tokens
     , comments = ast.comments
 
     , result = redeyed(code, conf, { buildAst: true } )
 
-    console.log(ast)
   t.deepEquals(result.ast, ast, 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
   t.deepEquals(result.comments, comments, 'comments')
@@ -49,8 +47,7 @@ test('redeyed result has esprima ast, tokens, comments and splits and transforme
 test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits but no transformed code', function (t) {
   var code = '// a comment\nvar a = 3;'
     , conf = { Keyword: { _default: '_:-' } }
-
-    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, tolerant: true })
+    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
     , tokens =  ast.tokens
     , comments = ast.comments
 

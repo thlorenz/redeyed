@@ -193,13 +193,13 @@ function bootstrap(esprima, exportFn) {
     }
 
     if (buildAst) {
-      ast = parser.parse(code, { tokens: true, comment: true, range: true, tolerant: true });
+      ast = parser.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true });
       tokens = ast.tokens;
       comments = ast.comments;
     } else {
       tokens = [];
       comments = [];
-      parser.tokenize(code, { range: true, comment: true }, function (token) {
+      parser.tokenize(code, { range: true, loc: true, comment: true }, function (token) {
         if (token.type === 'LineComment') {
           token.type = 'Line';
           comments.push(token)
