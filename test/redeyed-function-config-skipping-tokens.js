@@ -1,6 +1,6 @@
 'use strict'
 
-var test = require('tap').test
+var test = require('tape')
 var redeyed = require('..')
 
 test('given i skip 2 more tokens after each semicolon', function(t) {

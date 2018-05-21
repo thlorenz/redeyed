@@ -1,6 +1,6 @@
 'use strict'
 
-var test = require('tap').test
+var test = require('tape')
 var redeyed = require('..')
 var esprima = require('esprima')
 
@@ -14,7 +14,7 @@ test('redeyed result does not have esprima ast by default', function(t) {
 
   var result = redeyed(code, conf)
 
-  t.type(result.ast, 'undefined', 'ast')
+  t.equal(typeof result.ast, 'undefined', 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
   t.deepEquals(result.comments, comments, 'comments')
   t.notEquals(result.code, undefined, 'code')

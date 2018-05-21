@@ -6,7 +6,7 @@
   "main": "redeyed.js",
   "scripts": {
     "test": "npm run run-test && npm run lint",
-    "run-test": "tap test/*.js",
+    "run-test": "tape test/*.js",
     "lint": "standart",
     "demo-log": "node examples/replace-log",
     "demo": "cd examples/browser; open index.html"
@@ -28,7 +28,7 @@
     "cardinal": "~1.0.0",
     "readdirp": "~2.1.0",
     "standart": "^6.1.0",
-    "tap": "~11.1.4"
+    "tape": "~4.9.0"
   },
   "dependencies": {
     "esprima": "~4.0.0"

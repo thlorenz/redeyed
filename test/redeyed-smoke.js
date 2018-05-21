@@ -1,7 +1,7 @@
 'use strict'
 
 // applying redeyed to a bunch of files of contained libraries as a smoke test
-var test     =  require('tap').test
+var test     =  require('tape')
 var path     =  require('path')
 var fs       =  require('fs')
 var readdirp =  require('readdirp')
