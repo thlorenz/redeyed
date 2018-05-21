@@ -1,40 +1,34 @@
-'use strict';
-/*jshint asi: true*/
+'use strict'
 
 var test = require('tap').test
-  , util = require('util')
-  , redeyed = require('..')
-  , esprima = require('esprima')
+var redeyed = require('..')
+var esprima = require('esprima')
 
-function inspect (obj) {
-  return util.inspect(obj, false, 5, true)
-}
-
-test('redeyed result does not have esprima ast by default', function (t) {
+test('redeyed result does not have esprima ast by default', function(t) {
   var code = '// a comment\nvar a = 3;'
-    , conf = { Keyword: { _default: '_:-' } }
+  var conf = { Keyword: { _default: '_:-' } }
 
-    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
-    , tokens =  ast.tokens
-    , comments = ast.comments
+  var ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
+  var tokens =  ast.tokens
+  var comments = ast.comments
 
-    , result = redeyed(code, conf)
+  var result = redeyed(code, conf)
 
   t.type(result.ast, 'undefined', 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
   t.deepEquals(result.comments, comments, 'comments')
   t.notEquals(result.code, undefined, 'code')
   t.end()
-});
+})
 
-test('redeyed result has esprima ast, tokens, comments and splits and transformed code', function (t) {
+test('redeyed result has esprima ast, tokens, comments and splits and transformed code', function(t) {
   var code = '// a comment\nvar a = 3;'
-    , conf = { Keyword: { _default: '_:-' } }
-    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
-    , tokens =  ast.tokens
-    , comments = ast.comments
+  var conf = { Keyword: { _default: '_:-' } }
+  var ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
+  var tokens =  ast.tokens
+  var comments = ast.comments
 
-    , result = redeyed(code, conf, { buildAst: true } )
+  var result = redeyed(code, conf, { buildAst: true })
 
   t.deepEquals(result.ast, ast, 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
@@ -42,16 +36,16 @@ test('redeyed result has esprima ast, tokens, comments and splits and transforme
   t.notEquals(result.code, undefined, 'code')
 
   t.end()
-});
+})
 
-test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits but no transformed code', function (t) {
+test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits but no transformed code', function(t) {
   var code = '// a comment\nvar a = 3;'
-    , conf = { Keyword: { _default: '_:-' } }
-    , ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
-    , tokens =  ast.tokens
-    , comments = ast.comments
+  var conf = { Keyword: { _default: '_:-' } }
+  var ast    =  esprima.parse(code, { tokens: true, comment: true, range: true, loc: true, tolerant: true })
+  var tokens =  ast.tokens
+  var comments = ast.comments
 
-    , result = redeyed(code, conf, { nojoin: true, buildAst: true })
+  var result = redeyed(code, conf, { nojoin: true, buildAst: true })
 
   t.deepEquals(result.ast, ast, 'ast')
   t.deepEquals(result.tokens, tokens, 'tokens')
@@ -59,4 +53,4 @@ test('redeyed result - { nojoin } has esprima ast, tokens, comments and splits b
   t.equals(result.code, undefined, 'code')
 
   t.end()
-});
+})

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copy this file and use it as a starting point for your redeyed config.
  * Just fill in the tokens you want to surround/replace.
  * Keep in mind that more specific configurations override less specific ones.
@@ -84,14 +84,14 @@ module.exports = {
     , _default      :  undefined
   }
   , 'Punctuator': {
-      ';': undefined  
-    , '.': undefined  
-    , ',': undefined  
+      ';': undefined
+    , '.': undefined
+    , ',': undefined
 
-    , '{': undefined  
-    , '}': undefined  
-    , '(': undefined  
-    , ')': undefined  
+    , '{': undefined
+    , '}': undefined
+    , '(': undefined
+    , ')': undefined
     , '[': undefined
     , ']': undefined
 
@@ -138,9 +138,8 @@ module.exports = {
     , '>>=': undefined
     , '...': undefined
     , '**=': undefined
-    
-    , '>>>=': undefined
 
+    , '>>>=': undefined
 
     , _default: undefined
   }
@@ -156,4 +155,4 @@ module.exports = {
     }
 
   , _default: undefined
-};
+}

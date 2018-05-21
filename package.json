@@ -5,7 +5,9 @@
   "author": "Thorsten Lorenz <thlorenz@gmx.de> (thlorenz.com)",
   "main": "redeyed.js",
   "scripts": {
-    "test": "tap test/*.js",
+    "test": "npm run run-test && npm run lint",
+    "run-test": "tap test/*.js",
+    "lint": "standart",
     "demo-log": "node examples/replace-log",
     "demo": "cd examples/browser; open index.html"
   },
@@ -25,6 +27,7 @@
   "devDependencies": {
     "cardinal": "~1.0.0",
     "readdirp": "~2.1.0",
+    "standart": "^6.1.0",
     "tap": "~11.1.4"
   },
   "dependencies": {
