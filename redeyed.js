@@ -164,7 +164,11 @@ function bootstrap(esprima, exportFn) {
   function redeyed(code, config, opts) {
     opts = opts || {}
     var parser = opts.parser || esprima
-    var buildAst = !!opts.buildAst
+    var jsx = !!opts.jsx
+    // tokenizer doesn't support JSX at this point (esprima@4.0.0)
+    // therefore we need to generate the AST via the parser not only to
+    // avoid the tokenizer from erroring but also to get JSXIdentifier tokens
+    var buildAst = jsx || !!opts.buildAst
 
     var hashbang =  ''
     var ast
@@ -203,6 +207,8 @@ function bootstrap(esprima, exportFn) {
         }
       })
     }
+    const fs = require('fs')
+    fs.writeFileSync('/tmp/result.json', (JSON.stringify(tokens, null, 2)), 'utf8')
 
     normalize(config)
 
