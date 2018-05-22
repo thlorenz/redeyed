@@ -207,9 +207,6 @@ function bootstrap(esprima, exportFn) {
         }
       })
     }
-    const fs = require('fs')
-    fs.writeFileSync('/tmp/result.json', (JSON.stringify(tokens, null, 2)), 'utf8')
-
     normalize(config)
 
     function tokenIndex(tokens, tkn, start) {
