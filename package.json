@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git://github.com/thlorenz/redeyed.git"
   },
+  "files": [
+    "redeyed.js"
+  ],
   "keywords": [
     "ast",
     "syntax",
